@@ -296,12 +296,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(255,250,252,.94);backdr
 .zr.ko{background:rgba(232,82,138,.08);color:var(--pd);border:1px solid rgba(232,82,138,.2);display:block}
 /* MENU LAYOUT */
 .mlayout{max-width:1180px;margin:0 auto;padding:18px 18px 70px;display:flex;gap:20px;align-items:flex-start}
-.sidebar{flex:0 0 178px;position:sticky;top:74px}
 .sb-t{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:7px}
-.sb-nav{display:flex;flex-direction:column;gap:2px}
-.sb-l{padding:7px 12px;border-radius:9px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;border-left:3px solid transparent}
-.sb-l:hover{background:var(--bg2);color:var(--text)}
-.sb-l.on{background:var(--pl);color:var(--p);border-left-color:var(--p)}
 .mmain{flex:1;min-width:0}
 .csec{margin-bottom:28px;scroll-margin-top:74px}
 .ctitle{font-size:18px;font-weight:900;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
@@ -521,7 +516,7 @@ header{position:sticky;top:0;z-index:200;background:rgba(255,250,252,.94);backdr
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;color:var(--muted);font-size:12px;background:var(--bg2)}
 .flogo{font-size:14px;font-weight:900;color:var(--p);margin-bottom:3px}
-@media(max-width:768px){.sidebar{display:none}.hero-banner{flex:0 0 100%;height:160px}.igrid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.hero-banner{flex:0 0 100%;height:160px}.igrid{grid-template-columns:1fr 1fr}}
 @media(max-width:460px){.hdr{padding:0 11px}.hdr-src{display:none}.logo-tag{display:none}.igrid{gap:8px}.mlayout{padding:12px 11px 60px}.frow{grid-template-columns:1fr}}
 </style>
 </head>
@@ -560,8 +555,22 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
   <div class="zr" id="zr"></div>
 </div></div>
 <div class="mlayout">
-  <aside class="sidebar"><div class="sb-t">Catégories</div><div class="sb-nav" id="sbnav"></div></aside>
-  <main class="mmain" id="mmain"></main>
+  <!-- PAGE CATÉGORIES -->
+  <div id="catPage" style="width:100%;padding:18px 14px">
+    <div style="font-size:18px;font-weight:900;margin-bottom:16px;color:var(--text)">🍔 Nos catégories</div>
+    <div id="catGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
+  </div>
+  <!-- PAGE PRODUITS -->
+  <div id="prodPage" style="display:none;width:100%;flex-direction:column">
+    <div id="prodPageHeader" style="display:flex;align-items:center;gap:10px;padding:14px 14px 0">
+      <button onclick="backToCats()" style="background:var(--pl);border:1px solid rgba(232,82,138,.2);color:var(--p);font-size:20px;width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900">←</button>
+      <div>
+        <div id="prodPageTitle" style="font-size:16px;font-weight:900;color:var(--text)"></div>
+        <div id="prodPageCount" style="font-size:11px;color:var(--muted)"></div>
+      </div>
+    </div>
+    <main class="mmain" id="mmain" style="padding-top:10px"></main>
+  </div>
 </div>
 <!-- ALLERGENS -->
 <section style="background:var(--bg2);border-top:1px solid var(--border);padding:28px 18px">
@@ -1225,18 +1234,57 @@ let sq='';
 function doSearch(v){sq=v.toLowerCase();renderMenu();}
 
 // ═══ MENU ═══
-function renderMenu(){
-  const main=document.getElementById('mmain');
-  const nav=document.getElementById('sbnav');
+let currentCat=null;
+
+function renderCatPage(){
+  const el=document.getElementById('catGrid');
   const cu=CATS.filter(c=>MENU.some(m=>m.cat===c.id));
-  nav.innerHTML=cu.map(c=>'<div class="sb-l" id="nav-'+c.id+'" onclick="scrollCat(\''+c.id+'\')">'+c.e+' '+c.n+'</div>').join('');
-  if(sq){main.innerHTML='<div class="csec"><div class="ctitle">🔍 Résultats</div><div class="igrid">'+MENU.filter(m=>m.n.toLowerCase().includes(sq)||m.d.toLowerCase().includes(sq)).map(rc).join('')+'</div></div>';return;}
-  main.innerHTML=cu.map(c=>{const items=MENU.filter(m=>m.cat===c.id);if(!items.length)return'';return'<div class="csec" id="cat-'+c.id+'"><div class="ctitle">'+c.e+' '+c.n+'</div><div class="igrid">'+items.map(rc).join('')+'</div></div>';}).join('');
-  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const id=e.target.id.replace('cat-','');document.querySelectorAll('.sb-l').forEach(l=>l.classList.remove('on'));const lk=document.getElementById('nav-'+id);if(lk)lk.classList.add('on');}});},{threshold:.25});
-  document.querySelectorAll('.csec').forEach(s=>obs.observe(s));
+  if(!cu.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);grid-column:1/-1;text-align:center;padding:30px 0">Aucune catégorie disponible.</p>';return;}
+  el.innerHTML=cu.map(c=>{
+    const count=MENU.filter(m=>m.cat===c.id).length;
+    const img=c.img?'<img src="'+c.img+'" style="width:100%;height:100%;object-fit:cover;border-radius:14px 14px 0 0" loading="lazy">':'<div style="font-size:52px;display:flex;align-items:center;justify-content:center;height:100%;background:var(--pl)">'+c.e+'</div>';
+    return '<div onclick="openCat(\''+c.id+'\')" style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.06);active:scale(.97);transition:transform .1s">'+
+      '<div style="height:130px;overflow:hidden;background:var(--pl)">'+img+'</div>'+
+      '<div style="padding:10px 11px 12px">'+
+      '<div style="font-size:13px;font-weight:900;color:var(--text)">'+c.e+' '+c.n+'</div>'+
+      '<div style="font-size:10px;color:var(--muted);margin-top:3px">'+count+' produit'+(count>1?'s':'')+'</div>'+
+      '<div style="margin-top:9px;background:var(--p);color:#fff;font-size:11px;font-weight:800;padding:6px 0;border-radius:8px;text-align:center">Voir les produits →</div>'+
+      '</div></div>';
+  }).join('');
 }
+
+function openCat(catId){
+  currentCat=catId;
+  const cat=CATS.find(c=>c.id===catId);
+  document.getElementById('catPage').style.display='none';
+  document.getElementById('prodPage').style.display='flex';
+  document.getElementById('prodPageTitle').textContent=(cat?cat.e+' '+cat.n:'');
+  const items=MENU.filter(m=>m.cat===catId);
+  document.getElementById('prodPageCount').textContent=items.length+' produit'+(items.length>1?'s':'');
+  document.getElementById('mmain').innerHTML='<div class="igrid">'+items.map(rc).join('')+'</div>';
+}
+
+function backToCats(){
+  currentCat=null;
+  document.getElementById('prodPage').style.display='none';
+  document.getElementById('catPage').style.display='block';
+}
+
+function renderMenu(){
+  if(sq){
+    document.getElementById('catPage').style.display='none';
+    document.getElementById('prodPage').style.display='flex';
+    document.getElementById('prodPageTitle').textContent='🔍 Résultats';
+    const res=MENU.filter(m=>m.n.toLowerCase().includes(sq)||m.d.toLowerCase().includes(sq));
+    document.getElementById('prodPageCount').textContent=res.length+' résultat'+(res.length>1?'s':'');
+    document.getElementById('mmain').innerHTML='<div class="igrid">'+res.map(rc).join('')+'</div>';
+    return;
+  }
+  if(currentCat){openCat(currentCat);return;}
+  renderCatPage();
+}
+
 function rc(item){return'<div class="pc" onclick="openMod('+item.id+')"><div class="pc-img">'+(item.ph?'<img src="'+item.ph+'" alt="'+item.n+'" loading="lazy">':`<span style="font-size:46px">${item.e}</span>`)+'</div><div class="pc-body"><div class="pc-name">'+item.n+'</div><div class="pc-desc">'+item.d+'</div><div class="pc-foot"><span class="pc-price">'+f(item.p)+'</span><button class="pc-add" onclick="event.stopPropagation();openMod('+item.id+')">+</button></div></div></div>';}
-function scrollCat(id){const el=document.getElementById('cat-'+id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
 renderMenu();
 
 // ═══ MODAL PRODUIT ═══
@@ -1591,7 +1639,41 @@ function saveHrs(){
   showToast('✅ Horaires sauvegardés !');
 }
 function saveCM(){C.cm=document.getElementById('aCM').value;if(window.fbSaveInfo)window.fbSaveInfo(C);showToast('✅ Message mis à jour !');}
-function renderACats(){const el=document.getElementById('catList');el.innerHTML=CATS.map(c=>'<div style="display:flex;align-items:center;gap:5px;background:var(--pl);border:1px solid rgba(232,82,138,.2);border-radius:50px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--p)">'+c.e+' '+c.n+'<span style="cursor:pointer;opacity:.6;font-size:12px" onclick="rmCat(\''+c.id+'\')">×</span></div>').join('');const sel=document.getElementById('pC');if(sel)sel.innerHTML=CATS.map(c=>'<option value="'+c.id+'">'+c.e+' '+c.n+'</option>').join('');}
+function renderACats(){
+  const el=document.getElementById('catList');
+  el.innerHTML=CATS.map(c=>{
+    return '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:7px;display:flex;align-items:center;gap:10px">'+
+      '<div style="width:48px;height:48px;border-radius:8px;overflow:hidden;background:var(--pl);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="document.getElementById(\'catImg-'+c.id+'\').click()">'+
+      (c.img?'<img src="'+c.img+'" style="width:100%;height:100%;object-fit:cover">':'<span style="font-size:22px">'+c.e+'</span>')+
+      '</div>'+
+      '<input type="file" id="catImg-'+c.id+'" accept="image/*" style="display:none" onchange="uploadCatImg(event,\''+c.id+'\')">'+
+      '<div style="flex:1"><div style="font-size:12px;font-weight:800">'+c.e+' '+c.n+'</div>'+
+      '<div style="font-size:10px;color:var(--muted)">'+MENU.filter(m=>m.cat===c.id).length+' produit(s) · Clique sur l\'image pour changer</div></div>'+
+      '<span style="cursor:pointer;color:var(--muted);font-size:18px" onclick="rmCat(\''+c.id+'\')">×</span>'+
+      '</div>';
+  }).join('');
+  const sel=document.getElementById('pC');
+  if(sel)sel.innerHTML=CATS.map(c=>'<option value="'+c.id+'">'+c.e+' '+c.n+'</option>').join('');
+}
+
+function uploadCatImg(e,catId){
+  const f2=e.target.files[0];if(!f2)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const img2=new Image();
+    img2.onload=()=>{
+      const maxW=600;let w=img2.width,h=img2.height;
+      if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}
+      const cnv=document.createElement('canvas');cnv.width=w;cnv.height=h;
+      cnv.getContext('2d').drawImage(img2,0,0,w,h);
+      const s=cnv.toDataURL('image/jpeg',0.7);
+      const cat=CATS.find(c=>c.id===catId);
+      if(cat){cat.img=s;renderACats();renderMenu();if(window.fbSaveCats)window.fbSaveCats(CATS);showToast('📸 Image catégorie mise à jour !');}
+    };
+    img2.src=ev.target.result;
+  };
+  r.readAsDataURL(f2);
+}
 function addCat(){const e=document.getElementById('nce').value.trim()||'🍽️';const n=document.getElementById('ncn').value.trim();if(!n)return;const id=n.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');if(CATS.find(c=>c.id===id)){showToast('Catégorie déjà existante.');return;}CATS.push({id,e,n});document.getElementById('nce').value='';document.getElementById('ncn').value='';renderACats();renderMenu();if(window.fbSaveCats)window.fbSaveCats(CATS);showToast('✅ "'+n+'" ajoutée !');}
 function rmCat(id){if(!confirm('Supprimer ?'))return;CATS=CATS.filter(c=>c.id!==id);renderACats();renderMenu();if(window.fbSaveCats)window.fbSaveCats(CATS);showToast('Catégorie supprimée.');}
 function renderAProds(){const el=document.getElementById('apList');el.innerHTML=MENU.map(item=>'<div class="apitem"><div class="apthumb">'+(item.ph?'<img src="'+item.ph+'">':`${item.e}`)+'</div><div class="apinfo"><div class="apname">'+item.n+'</div><div class="apmeta">'+f(item.p)+' · '+(CATS.find(c=>c.id===item.cat)?.n||item.cat)+'</div></div><div class="apacts"><button class="asb" onclick="editP('+item.id+')">✏️</button><button class="asb" onclick="delP('+item.id+')" style="color:var(--err)">🗑️</button></div></div>').join('');}
