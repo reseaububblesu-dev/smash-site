@@ -1433,7 +1433,7 @@ function renderUpsellA(){
       (MENU.filter(m=>m.n&&m.p).map(item=>{
         const on=sel.includes(item.id);
         return '<div class="uai"><div class="uai-info"><div class="uai-n">'+item.e+' '+item.n+'</div><div class="uai-m">'+f(item.p)+'</div></div>'+
-          '<div class="tgl '+(on?'on':'')+' " id="utgl-'+cat.id+'-'+item.id+'" onclick="togUP('' +cat.id+ '','+item.id+')"></div></div>';
+          '<div class="tgl '+(on?'on':'')+'" id="utgl-'+cat.id+'-'+item.id+'" onclick="togUP(\''+cat.id+'\','+item.id+')"></div></div>';
       }).join(''))+
       '</div></div>';
   }).join('');
