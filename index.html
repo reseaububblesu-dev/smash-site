@@ -1449,7 +1449,7 @@ function aTab(name,btn){TABS.forEach(id=>document.getElementById('tab-'+id).styl
 function renderClients(){
   const q=(document.getElementById('clientQ')?.value||'').toLowerCase();
   const map={};
-  ORDERS.forEach(o=>{
+  ORDERS.filter(o=>o.status!=='cancel'&&o.status!=='failed').forEach(o=>{
     const key=o.phone||o.email||o.name;
     if(!map[key])map[key]={name:o.name,phone:o.phone,email:o.email||'',cmds:0,total:0,last:o.date};
     map[key].cmds++;
@@ -1477,7 +1477,7 @@ function exportClientsPDF(){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF();
   const map={};
-  ORDERS.forEach(o=>{
+  ORDERS.filter(o=>o.status!=='cancel'&&o.status!=='failed').forEach(o=>{
     const key=o.phone||o.email||o.name;
     if(!map[key])map[key]={name:o.name,phone:o.phone||'',email:o.email||'',cmds:0,total:0,last:o.date};
     map[key].cmds++;
@@ -1514,8 +1514,9 @@ function renderStats(){
     if(period==='lastmonth'){const lm=new Date(now.getFullYear(),now.getMonth()-1,1);const lme=new Date(now.getFullYear(),now.getMonth(),0);return d>=lm&&d<=lme;}
     return true;
   });
-  const totalCA=filtered.reduce((s,o)=>s+parseFloat((o.total||'0').replace(',','.').replace(' €',''))||0,0);
-  const avg=filtered.length?totalCA/filtered.length:0;
+  const filteredPaid=filtered.filter(o=>o.status!=='cancel'&&o.status!=='failed');
+  const totalCA=filteredPaid.reduce((s,o)=>s+parseFloat((o.total||'0').replace(',','.').replace(' €',''))||0,0);
+  const avg=filteredPaid.length?totalCA/filteredPaid.length:0;
   const livraison=filtered.filter(o=>!o.modeLivraison||o.modeLivraison.includes('Livraison')).length;
   const collect=filtered.filter(o=>o.modeLivraison&&o.modeLivraison.includes('Collect')).length;
   const cash=filtered.filter(o=>o.payMethod&&o.payMethod.includes('Espèces')).length;
@@ -1523,12 +1524,12 @@ function renderStats(){
   const apple=filtered.filter(o=>o.payMethod&&o.payMethod.includes('Apple')).length;
   const sc=n=>'<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center"><div style="font-size:22px;font-weight:900;color:var(--p)">'+n.val+'</div><div style="font-size:10px;font-weight:700;color:var(--muted);margin-top:2px">'+n.lbl+'</div></div>';
   document.getElementById('statCards').innerHTML=
-    sc({val:filtered.length,lbl:'Commandes'})+
+    sc({val:filteredPaid.length+(filtered.length-filteredPaid.length>0?' ('+( filtered.length-filteredPaid.length)+' annulée(s))':''),lbl:'Commandes payées'})+
     sc({val:totalCA.toFixed(2).replace('.',',')+'€',lbl:'Chiffre d\'affaires'})+
     sc({val:avg.toFixed(2).replace('.',',')+'€',lbl:'Panier moyen'})+
     sc({val:livraison+' / '+collect,lbl:'Livraison / Collect'})+
     sc({val:card+' CB · '+apple+' Apple · '+cash+' Cash',lbl:'Paiements'})+
-    sc({val:[...new Set(filtered.map(o=>o.phone).filter(Boolean))].length,lbl:'Clients uniques'});
+    sc({val:[...new Set(filteredPaid.map(o=>o.phone).filter(Boolean))].length,lbl:'Clients uniques'});
   const el=document.getElementById('statOrders');
   if(!filtered.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);text-align:center;padding:16px 0">Aucune commande sur cette période.</p>';return;}
   el.innerHTML=filtered.map(o=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;font-size:11px">'+
@@ -1629,7 +1630,7 @@ function togUP(catId,itemId){
 function renderZtags(){const el=document.getElementById('ztags');el.innerHTML=ZONES.map(z=>'<div class="ztag">'+z.z+' – '+z.c+'<span class="ztag-x" onclick="rmZone(\''+z.z+'\')">×</span></div>').join('');}
 function addZone(){const zp=document.getElementById('nzp').value.trim();const ct=document.getElementById('nzc').value.trim();if(!zp||!ct){showToast('⚠️ Code postal et ville requis.');return;}if(ZONES.some(z=>z.z===zp)){showToast('Zone déjà existante.');return;}ZONES.push({z:zp,c:ct,t:20});renderZtags();document.getElementById('nzp').value='';document.getElementById('nzc').value='';if(window.fbSaveZones)window.fbSaveZones(ZONES);showToast('✅ '+ct+' ajouté !');}
 function rmZone(z){ZONES=ZONES.filter(x=>x.z!==z);renderZtags();if(window.fbSaveZones)window.fbSaveZones(ZONES);showToast('Zone supprimée.');}
-function renderOrds(){const el=document.getElementById('ordList');document.getElementById('ocnt').textContent=ORDERS.length?ORDERS.length+' commande(s)':'';if(!ORDERS.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);text-align:center;padding:22px 0">Aucune commande pour l\'instant.</p>';return;}el.innerHTML=ORDERS.map((o,i)=>{const stars=o.rating?'⭐'.repeat(o.rating):'';return'<div class="ocard"><div class="ocard-hd"><span class="oid">'+o.id+'</span><span class="ost '+o.status+'">'+(o.status==='new'?'🔴 Nouvelle':o.status==='prep'?'🟡 En prépa':o.status==='cancel'?'❌ Annulée':o.status==='failed'?'⚠️ Non livrée':'🟢 Livrée')+'</span></div><div class="oclt">👤 '+o.name+' · '+o.phone+'</div><div class="oadr">📍 '+o.address+'</div>'+(o.notes?'<div class="oadr">🚪 '+o.notes+'</div>':'')+(o.msg?'<div class="oadr" style="background:rgba(232,82,138,.06);border:1px solid rgba(232,82,138,.15);border-radius:7px;padding:6px 9px;margin-top:4px">💬 <strong>Message :</strong> '+o.msg+'</div>':'')+(o.promo?'<div class="oadr" style="color:var(--ok)">🎟 '+o.promo+'</div>':'')+'<div class="oitxt">🛒 '+o.items.replace(/\n/g,' · ')+'</div><div class="ototxt">'+o.total+' · '+(o.time||'')+'</div>'+(stars?'<div style="font-size:11px;color:var(--muted);margin-top:3px">'+stars+' '+o.ratingComment+'</div>':'')+'<div class="sbtns"><div class="sbtn '+(o.status==='new'?'cur':'')+'" onclick="setSt('+i+',\'new\')">Nouvelle</div><div class="sbtn '+(o.status==='prep'?'cur':'')+'" onclick="setSt('+i+',\'prep\')">En prépa</div><div class="sbtn '+(o.status==='done'?'cur':'')+'" onclick="setSt('+i+',\'done\')">Livrée ✓</div><div class="sbtn '+(o.status==='cancel'?'cur':'')+'" onclick="setSt('+i+',\'cancel\')">❌ Annulée</div><div class="sbtn '+(o.status==='failed'?'cur':'')+'" onclick="setSt('+i+',\'failed\')">⚠️ Non livrée</div><div class="sbtn" onclick="openTracking(\''+o.id+'\')">📍 Suivi</div></div></div>';}).join('');}
+function renderOrds(){const el=document.getElementById('ordList');document.getElementById('ocnt').textContent=ORDERS.length?ORDERS.length+' commande(s)':'';if(!ORDERS.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);text-align:center;padding:22px 0">Aucune commande pour l\'instant.</p>';return;}el.innerHTML=ORDERS.map((o,i)=>{const stars=o.rating?'⭐'.repeat(o.rating):'';const isInactive=o.status==='cancel'||o.status==='failed';return'<div class="ocard" style="'+(isInactive?'opacity:.4;filter:grayscale(.7);pointer-events:none':'')+'"><div class="ocard-hd" style="pointer-events:'+(isInactive?'auto':'')+'"><span class="oid">'+o.id+'</span><span class="ost '+o.status+'">'+(o.status==='new'?'🔴 Nouvelle':o.status==='prep'?'🟡 En prépa':o.status==='cancel'?'❌ Annulée':o.status==='failed'?'⚠️ Non livrée':'🟢 Livrée')+'</span></div><div class="oclt">👤 '+o.name+' · '+o.phone+'</div><div class="oadr">📍 '+o.address+'</div>'+(o.notes?'<div class="oadr">🚪 '+o.notes+'</div>':'')+(o.msg?'<div class="oadr" style="background:rgba(232,82,138,.06);border:1px solid rgba(232,82,138,.15);border-radius:7px;padding:6px 9px;margin-top:4px">💬 <strong>Message :</strong> '+o.msg+'</div>':'')+(o.promo?'<div class="oadr" style="color:var(--ok)">🎟 '+o.promo+'</div>':'')+'<div class="oitxt">🛒 '+o.items.replace(/\n/g,' · ')+'</div><div class="ototxt">'+o.total+' · '+(o.time||'')+'</div>'+(stars?'<div style="font-size:11px;color:var(--muted);margin-top:3px">'+stars+' '+o.ratingComment+'</div>':'')+'<div class="sbtns" style="pointer-events:auto;opacity:1"><div class="sbtn '+(o.status==='new'?'cur':'')+'" onclick="setSt('+i+',\'new\')">Nouvelle</div><div class="sbtn '+(o.status==='prep'?'cur':'')+'" onclick="setSt('+i+',\'prep\')">En prépa</div><div class="sbtn '+(o.status==='done'?'cur':'')+'" onclick="setSt('+i+',\'done\')">Livrée ✓</div><div class="sbtn '+(o.status==='cancel'?'cur':'')+'" onclick="setSt('+i+',\'cancel\')">❌ Annulée</div><div class="sbtn '+(o.status==='failed'?'cur':'')+'" onclick="setSt('+i+',\'failed\')">⚠️ Non livrée</div><div class="sbtn" onclick="openTracking(\''+o.id+'\')">📍 Suivi</div></div></div>';}).join('');}
 function setSt(i,s){ORDERS[i].status=s;if(window.fbUpdateStatus)window.fbUpdateStatus(ORDERS[i].id,s);renderOrds();}
 function renderPromos(){const el=document.getElementById('promoList');if(!el)return;if(!PROMOS.length){el.innerHTML='<p style="font-size:11px;color:var(--muted)">Aucun code promo créé.</p>';return;}el.innerHTML=PROMOS.map((p,i)=>'<div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 11px;margin-bottom:6px"><div><div style="font-size:12px;font-weight:900;color:var(--p)">'+p.code+'</div><div style="font-size:10px;color:var(--muted)">'+(p.type==='pct'?'-'+p.val+'%':p.type==='fixed'?'-'+f(p.val):'Livraison offerte')+' · '+(p.uses?p.used+'/'+p.uses+' utilisations':'Illimité')+'</div></div><div style="display:flex;gap:5px"><div class="tgl '+(p.active?'on':'')+'" onclick="togPromo('+i+')"></div><button class="asb" onclick="delPromo('+i+')" style="color:var(--err)">🗑️</button></div></div>').join('');}
 function addPromo(){const code=document.getElementById('pCode').value.trim().toUpperCase();const type=document.getElementById('pType').value;const val=parseFloat(document.getElementById('pVal').value)||0;const uses=parseInt(document.getElementById('pUses').value)||null;if(!code){showToast('⚠️ Entre un code.');return;}if(PROMOS.find(p=>p.code===code)){showToast('Code déjà existant.');return;}PROMOS.push({code,type,val,uses,used:0,active:true});document.getElementById('pCode').value='';document.getElementById('pVal').value='';document.getElementById('pUses').value='';renderPromos();if(window.fbSavePromos)window.fbSavePromos(PROMOS);showToast('✅ Code "'+code+'" créé !');}
