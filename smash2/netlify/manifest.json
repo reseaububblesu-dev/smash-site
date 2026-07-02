@@ -1,0 +1,29 @@
+{
+  "name": "SMASH by Bubblesuz",
+  "short_name": "SMASH",
+  "description": "Commandez vos smash burgers en livraison sur Paris et banlieue",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFAFC",
+  "theme_color": "#E8528A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23E8528A'/><text y='.85em' font-size='380' x='60'>🍔</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23E8528A'/><text y='.85em' font-size='380' x='60'>🍔</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "shopping"],
+  "lang": "fr",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}
