@@ -32,6 +32,8 @@
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <script src="https://js.stripe.com/v3/"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -152,6 +154,9 @@ window.fbLoadUpsellByCat = async () => {
     return snap.exists ? snap.data() : null;
   } catch(e) { return null; }
 };
+function dk(h,a){let[r,g,b]=hrgb(h);return rgb2h(Math.max(0,Math.round(r*(1-a))),Math.max(0,Math.round(g*(1-a))),Math.max(0,Math.round(b*(1-a))));}
+function h2l(h){let[r,g,b]=hrgb(h);return'rgba('+r+','+g+','+b+',.09)';}
+function hrgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
 window.fbInit = async () => {
   try {
     const savedMenu = await window.fbLoadMenu();
@@ -180,6 +185,7 @@ window.fbInit = async () => {
       if(C.slogan) document.getElementById('ltag').textContent=C.slogan;
       if(C.htitle) document.getElementById('htitle').innerHTML=C.htitle;
       if(C.hdesc) document.getElementById('hdesc').textContent=C.hdesc;
+      if(C.colorP&&C.colorPd){const r=document.documentElement;r.style.setProperty('--p',C.colorP);r.style.setProperty('--pd',C.colorPd);r.style.setProperty('--pl',h2l(C.colorP));}
       if(C.rating) document.getElementById('irating').textContent=C.rating;
       if(C.delay) document.getElementById('idelay').textContent=C.delay;
       if(C.banner){const bi=document.getElementById('hbimg');bi.src=C.banner;bi.style.display='block';document.getElementById('bph').style.display='none';}
@@ -501,6 +507,8 @@ header{position:sticky;top:0;z-index:200;background:rgba(255,250,252,.94);backdr
 .ost.new{background:rgba(232,82,138,.12);color:var(--p)}
 .ost.prep{background:rgba(245,158,11,.12);color:var(--warn)}
 .ost.done{background:rgba(34,197,94,.12);color:var(--ok)}
+.ost.cancel{background:rgba(239,68,68,.12);color:var(--err)}
+.ost.failed{background:rgba(245,158,11,.12);color:var(--warn)}
 .oclt{font-size:12px;font-weight:700}
 .oadr{font-size:10px;color:var(--muted);margin-top:1px}
 .oitxt{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
@@ -941,8 +949,9 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
 <div id="tab-clients" style="display:none">
   <div class="asec">
     <div class="ast">👥 Base clients</div>
-    <div id="clientSearch" style="margin-bottom:10px">
-      <input class="ai" id="clientQ" placeholder="🔍 Rechercher un client..." oninput="renderClients()" style="margin:0">
+    <div style="display:flex;gap:7px;margin-bottom:10px">
+      <input class="ai" id="clientQ" placeholder="🔍 Rechercher..." oninput="renderClients()" style="margin:0;flex:1">
+      <button class="ab" onclick="exportClientsPDF()">📄 Exporter PDF</button>
     </div>
     <div id="clientList"></div>
   </div>
@@ -1464,7 +1473,35 @@ function renderClients(){
   ).join('');
 }
 
-// ═══ STATS ═══
+function exportClientsPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF();
+  const map={};
+  ORDERS.forEach(o=>{
+    const key=o.phone||o.email||o.name;
+    if(!map[key])map[key]={name:o.name,phone:o.phone||'',email:o.email||'',cmds:0,total:0,last:o.date};
+    map[key].cmds++;
+    map[key].total+=parseFloat((o.total||'0').replace(',','.').replace(' €',''))||0;
+    map[key].last=o.date;
+  });
+  const clients=Object.values(map).sort((a,b)=>b.cmds-a.cmds);
+  doc.setFontSize(16);
+  doc.setTextColor(232,82,138);
+  doc.text('SMASH by Bubblesuz — Liste clients',14,18);
+  doc.setFontSize(10);
+  doc.setTextColor(120,120,120);
+  doc.text('Exporté le '+new Date().toLocaleDateString('fr-FR')+' — '+clients.length+' clients',14,26);
+  doc.autoTable({
+    startY:32,
+    head:[['Nom','Téléphone','Email','Commandes','Total dépensé','Dernière cmd']],
+    body:clients.map(c=>[c.name,c.phone,c.email,c.cmds,c.total.toFixed(2).replace('.',',')+' €',c.last]),
+    styles:{fontSize:9,cellPadding:3},
+    headStyles:{fillColor:[232,82,138],textColor:255,fontStyle:'bold'},
+    alternateRowStyles:{fillColor:[255,245,249]},
+  });
+  doc.save('clients-smash-'+new Date().toISOString().slice(0,10)+'.pdf');
+  showToast('📄 PDF exporté !');
+}
 function renderStats(){
   const period=document.getElementById('statPeriod')?.value||'month';
   const now=new Date();
@@ -1503,11 +1540,8 @@ function applyTxt(){const nm=document.getElementById('aN').value||'SMASH by Bubb
 function applyHI(){const rv=document.getElementById('aR').value;const dv=document.getElementById('aD').value;document.getElementById('irating').textContent=rv;document.getElementById('idelay').textContent=dv;C.rating=rv;C.delay=dv;if(window.fbSaveInfo)window.fbSaveInfo(C);showToast('✅ Infos mises à jour !');}
 function applyClr(p,pd,sw){document.querySelectorAll('.csw').forEach(s=>s.classList.remove('on'));if(sw)sw.classList.add('on');setClr(p,pd);document.getElementById('cpH').value=p;document.getElementById('cpi').value=p;showToast('🎨 Couleur appliquée !');}
 function applyCuC(){const h=document.getElementById('cpH').value.trim();if(!/^#[0-9A-Fa-f]{6}$/.test(h)){showToast('⚠️ Format invalide');return;}setClr(h,dk(h,.15));showToast('🎨 Couleur personnalisée !');}
-function setClr(p,pd){const r=document.documentElement;r.style.setProperty('--p',p);r.style.setProperty('--pd',pd);r.style.setProperty('--pl',h2l(p));stripeEl=null;stripe=null;}
+function setClr(p,pd){const r=document.documentElement;r.style.setProperty('--p',p);r.style.setProperty('--pd',pd);r.style.setProperty('--pl',h2l(p));stripeEl=null;stripe=null;C.colorP=p;C.colorPd=pd;if(window.fbSaveInfo)window.fbSaveInfo(C);}
 document.getElementById('cpi').addEventListener('input',e=>{document.getElementById('cpH').value=e.target.value;});
-function dk(h,a){let[r,g,b]=hrgb(h);return rgb2h(Math.max(0,Math.round(r*(1-a))),Math.max(0,Math.round(g*(1-a))),Math.max(0,Math.round(b*(1-a))));}
-function h2l(h){let[r,g,b]=hrgb(h);return'rgba('+r+','+g+','+b+',.09)';}
-function hrgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
 function rgb2h(r,g,b){return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function changePwd(){const v=document.getElementById('newPwd').value.trim();if(!v||v.length<4){showToast('⚠️ Mot de passe trop court');return;}showToast('⚙️ Pour changer définitivement, modifie ADMIN_PWD dans le code HTML');document.getElementById('newPwd').value='';}
 function renderHours(){
@@ -1595,7 +1629,7 @@ function togUP(catId,itemId){
 function renderZtags(){const el=document.getElementById('ztags');el.innerHTML=ZONES.map(z=>'<div class="ztag">'+z.z+' – '+z.c+'<span class="ztag-x" onclick="rmZone(\''+z.z+'\')">×</span></div>').join('');}
 function addZone(){const zp=document.getElementById('nzp').value.trim();const ct=document.getElementById('nzc').value.trim();if(!zp||!ct){showToast('⚠️ Code postal et ville requis.');return;}if(ZONES.some(z=>z.z===zp)){showToast('Zone déjà existante.');return;}ZONES.push({z:zp,c:ct,t:20});renderZtags();document.getElementById('nzp').value='';document.getElementById('nzc').value='';if(window.fbSaveZones)window.fbSaveZones(ZONES);showToast('✅ '+ct+' ajouté !');}
 function rmZone(z){ZONES=ZONES.filter(x=>x.z!==z);renderZtags();if(window.fbSaveZones)window.fbSaveZones(ZONES);showToast('Zone supprimée.');}
-function renderOrds(){const el=document.getElementById('ordList');document.getElementById('ocnt').textContent=ORDERS.length?ORDERS.length+' commande(s)':'';if(!ORDERS.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);text-align:center;padding:22px 0">Aucune commande pour l\'instant.</p>';return;}el.innerHTML=ORDERS.map((o,i)=>{const stars=o.rating?'⭐'.repeat(o.rating):'';return'<div class="ocard"><div class="ocard-hd"><span class="oid">'+o.id+'</span><span class="ost '+o.status+'">'+(o.status==='new'?'🔴 Nouvelle':o.status==='prep'?'🟡 En prépa':'🟢 Livrée')+'</span></div><div class="oclt">👤 '+o.name+' · '+o.phone+'</div><div class="oadr">📍 '+o.address+'</div>'+(o.notes?'<div class="oadr">🚪 '+o.notes+'</div>':'')+(o.msg?'<div class="oadr" style="background:rgba(232,82,138,.06);border:1px solid rgba(232,82,138,.15);border-radius:7px;padding:6px 9px;margin-top:4px">💬 <strong>Message :</strong> '+o.msg+'</div>':'')+(o.promo?'<div class="oadr" style="color:var(--ok)">🎟 '+o.promo+'</div>':'')+'<div class="oitxt">🛒 '+o.items.replace(/\n/g,' · ')+'</div><div class="ototxt">'+o.total+' · '+(o.time||'')+'</div>'+(stars?'<div style="font-size:11px;color:var(--muted);margin-top:3px">'+stars+' '+o.ratingComment+'</div>':'')+'<div class="sbtns"><div class="sbtn '+(o.status==='new'?'cur':'')+'" onclick="setSt('+i+',\'new\')">Nouvelle</div><div class="sbtn '+(o.status==='prep'?'cur':'')+'" onclick="setSt('+i+',\'prep\')">En prépa</div><div class="sbtn '+(o.status==='done'?'cur':'')+'" onclick="setSt('+i+',\'done\')">Livrée ✓</div><div class="sbtn" onclick="openTracking(\''+o.id+'\')">📍 Suivi</div></div></div>';}).join('');}
+function renderOrds(){const el=document.getElementById('ordList');document.getElementById('ocnt').textContent=ORDERS.length?ORDERS.length+' commande(s)':'';if(!ORDERS.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);text-align:center;padding:22px 0">Aucune commande pour l\'instant.</p>';return;}el.innerHTML=ORDERS.map((o,i)=>{const stars=o.rating?'⭐'.repeat(o.rating):'';return'<div class="ocard"><div class="ocard-hd"><span class="oid">'+o.id+'</span><span class="ost '+o.status+'">'+(o.status==='new'?'🔴 Nouvelle':o.status==='prep'?'🟡 En prépa':o.status==='cancel'?'❌ Annulée':o.status==='failed'?'⚠️ Non livrée':'🟢 Livrée')+'</span></div><div class="oclt">👤 '+o.name+' · '+o.phone+'</div><div class="oadr">📍 '+o.address+'</div>'+(o.notes?'<div class="oadr">🚪 '+o.notes+'</div>':'')+(o.msg?'<div class="oadr" style="background:rgba(232,82,138,.06);border:1px solid rgba(232,82,138,.15);border-radius:7px;padding:6px 9px;margin-top:4px">💬 <strong>Message :</strong> '+o.msg+'</div>':'')+(o.promo?'<div class="oadr" style="color:var(--ok)">🎟 '+o.promo+'</div>':'')+'<div class="oitxt">🛒 '+o.items.replace(/\n/g,' · ')+'</div><div class="ototxt">'+o.total+' · '+(o.time||'')+'</div>'+(stars?'<div style="font-size:11px;color:var(--muted);margin-top:3px">'+stars+' '+o.ratingComment+'</div>':'')+'<div class="sbtns"><div class="sbtn '+(o.status==='new'?'cur':'')+'" onclick="setSt('+i+',\'new\')">Nouvelle</div><div class="sbtn '+(o.status==='prep'?'cur':'')+'" onclick="setSt('+i+',\'prep\')">En prépa</div><div class="sbtn '+(o.status==='done'?'cur':'')+'" onclick="setSt('+i+',\'done\')">Livrée ✓</div><div class="sbtn '+(o.status==='cancel'?'cur':'')+'" onclick="setSt('+i+',\'cancel\')">❌ Annulée</div><div class="sbtn '+(o.status==='failed'?'cur':'')+'" onclick="setSt('+i+',\'failed\')">⚠️ Non livrée</div><div class="sbtn" onclick="openTracking(\''+o.id+'\')">📍 Suivi</div></div></div>';}).join('');}
 function setSt(i,s){ORDERS[i].status=s;if(window.fbUpdateStatus)window.fbUpdateStatus(ORDERS[i].id,s);renderOrds();}
 function renderPromos(){const el=document.getElementById('promoList');if(!el)return;if(!PROMOS.length){el.innerHTML='<p style="font-size:11px;color:var(--muted)">Aucun code promo créé.</p>';return;}el.innerHTML=PROMOS.map((p,i)=>'<div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 11px;margin-bottom:6px"><div><div style="font-size:12px;font-weight:900;color:var(--p)">'+p.code+'</div><div style="font-size:10px;color:var(--muted)">'+(p.type==='pct'?'-'+p.val+'%':p.type==='fixed'?'-'+f(p.val):'Livraison offerte')+' · '+(p.uses?p.used+'/'+p.uses+' utilisations':'Illimité')+'</div></div><div style="display:flex;gap:5px"><div class="tgl '+(p.active?'on':'')+'" onclick="togPromo('+i+')"></div><button class="asb" onclick="delPromo('+i+')" style="color:var(--err)">🗑️</button></div></div>').join('');}
 function addPromo(){const code=document.getElementById('pCode').value.trim().toUpperCase();const type=document.getElementById('pType').value;const val=parseFloat(document.getElementById('pVal').value)||0;const uses=parseInt(document.getElementById('pUses').value)||null;if(!code){showToast('⚠️ Entre un code.');return;}if(PROMOS.find(p=>p.code===code)){showToast('Code déjà existant.');return;}PROMOS.push({code,type,val,uses,used:0,active:true});document.getElementById('pCode').value='';document.getElementById('pVal').value='';document.getElementById('pUses').value='';renderPromos();if(window.fbSavePromos)window.fbSavePromos(PROMOS);showToast('✅ Code "'+code+'" créé !');}
