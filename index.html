@@ -33,6 +33,7 @@
 </div>
 
 <script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script>
@@ -201,6 +202,30 @@ window.fbInit = async () => {
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => { if(window.fbInit) window.fbInit(); }, 500);
 });
+// Init EmailJS
+(function(){emailjs.init('Ups-vlsgUPekK9eyF');})();
+async function sendEmailNotif(order){
+  try{
+    await emailjs.send('service_7orehv8','template_kmedq0c',{
+      to_email:'livraisonbubblesu@gmail.com',
+      order_id:order.id,
+      client_name:order.name,
+      client_phone:order.phone,
+      client_email:order.email||'',
+      address:order.address,
+      notes:order.notes||'',
+      items:order.items,
+      total:order.total,
+      promo:order.promo||'',
+      est:order.est,
+      date:order.date,
+      msg:order.msg||'',
+      mode_livraison:order.modeLivraison||'Livraison',
+      pay_method:order.payMethod||'Carte'
+    });
+    console.log('Email envoyé !');
+  }catch(e){console.log('Email err:',e);}
+}
 </script>
 <style>
 :root{--p:#E8528A;--pd:#C93A72;--pl:#FFF0F6;--bg:#FFFAFC;--bg2:#FFF5F9;--card:#fff;--text:#1A0A12;--muted:#9A7A88;--border:#F0D6E4;--ok:#22C55E;--warn:#F59E0B;--err:#EF4444;--r:14px}
@@ -615,13 +640,28 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
       <div class="ferr" id="derr"></div>
       <div class="fg"><label class="fl">Prénom & Nom *</label><input class="fi" id="dName" placeholder="Jean Dupont"></div>
       <div class="fg"><label class="fl">Téléphone *</label><input class="fi" id="dPhone" type="tel" placeholder="06 00 00 00 00"></div>
+      <!-- MODE LIVRAISON -->
+      <div class="fg" style="margin-bottom:14px">
+        <label class="fl">🚀 Mode de commande</label>
+        <div class="pms" style="margin-top:6px">
+          <div class="pm sel" id="mlLiv" onclick="selMode('livraison')"><div class="ic">🛵</div>Livraison</div>
+          <div class="pm" id="mlClick" onclick="selMode('click')"><div class="ic">🏪</div>Click & Collect</div>
+        </div>
+        <div id="clickInfo" style="display:none;margin-top:10px;background:var(--pl);border:1px solid rgba(232,82,138,.2);border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.65">
+          📍 <strong>81 avenue Pasteur, 93260 Les Lilas</strong><br>
+          🕐 Votre commande sera prête dans <strong>15–30 min</strong> après confirmation.<br>
+          Vous recevrez un appel dès qu'elle est prête !
+        </div>
+      </div>
       <div class="fg"><label class="fl">Email</label><input class="fi" id="dEmail" type="email" placeholder="jean@email.com"></div>
+      <div id="adresseFields">
       <div class="fg"><label class="fl">Adresse complète *</label><input class="fi" id="dAddr" placeholder="12 rue de la Paix, Bât A"></div>
       <div class="frow">
         <div class="fg"><label class="fl">Code postal *</label><input class="fi" id="dZip" placeholder="75011" maxlength="10"></div>
         <div class="fg"><label class="fl">Ville</label><input class="fi" id="dCity" placeholder="Paris"></div>
       </div>
       <div class="fg"><label class="fl">Étage / Digicode</label><input class="fi" id="dNotes" placeholder="3ème étage, code 1234..."></div>
+      </div>
       <div class="fg"><label class="fl">💬 Message pour le restaurant</label><textarea class="fi" id="dMsg" placeholder="Ex: sans oignon, allergie aux arachides, sonnette cassée..." rows="3" style="resize:none;line-height:1.5"></textarea></div>
       <div class="fg"><label class="fl">Heure souhaitée</label>
         <select class="fsel" id="dTime">
@@ -670,7 +710,7 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
 <div class="succ" id="succ">
   <div class="succ-ico">✓</div><h2>Confirmée ! 🎉</h2>
   <div class="otag" id="otag">#CMD-0000</div>
-  <p>Merci ! Un SMS de confirmation arrive.</p>
+  <p>Merci pour votre commande ! Restez disponible et joignable jusqu'à la livraison.</p>
   <div style="background:linear-gradient(135deg,var(--pl),var(--bg2));border:1px solid rgba(232,82,138,.2);border-radius:12px;padding:14px 20px;text-align:center;width:100%">
     <div style="font-size:22px;margin-bottom:4px">🕐</div>
     <div style="font-size:18px;font-weight:900">Livraison estimée</div>
@@ -753,7 +793,10 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
   <div class="atab" onclick="aTab('upsell',this)">✨ Vente+</div>
   <div class="atab" onclick="aTab('zones',this)">📍 Zones</div>
   <div class="atab" onclick="aTab('orders',this)">📦 Cmds</div>
-  <div class="atab" onclick="aTab('promo',this)">🎟 Promos</div><div class="atab" onclick="aTab('stripe',this)">💳 Paiement</div>
+  <div class="atab" onclick="aTab('promo',this)">🎟 Promos</div>
+  <div class="atab" onclick="aTab('clients',this)">👥 Clients</div>
+  <div class="atab" onclick="aTab('stats',this)">📊 Stats</div>
+  <div class="atab" onclick="aTab('stripe',this)">💳 Paiement</div>
 </div>
 <div class="abody">
 <!-- DESIGN -->
@@ -892,6 +935,35 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
       <input class="ai" id="pUses" placeholder="Utilisations max (vide = illimité)" type="number" style="margin-top:6px">
       <button class="ab" style="margin-top:6px;width:100%" onclick="addPromo()">+ Créer le code</button>
     </div>
+  </div>
+</div>
+<!-- CLIENTS -->
+<div id="tab-clients" style="display:none">
+  <div class="asec">
+    <div class="ast">👥 Base clients</div>
+    <div id="clientSearch" style="margin-bottom:10px">
+      <input class="ai" id="clientQ" placeholder="🔍 Rechercher un client..." oninput="renderClients()" style="margin:0">
+    </div>
+    <div id="clientList"></div>
+  </div>
+</div>
+<!-- STATS -->
+<div id="tab-stats" style="display:none">
+  <div class="asec">
+    <div class="ast">📅 Période</div>
+    <div class="arow2" style="margin-bottom:10px">
+      <select class="ai" id="statPeriod" onchange="renderStats()" style="margin:0">
+        <option value="month">Ce mois-ci</option>
+        <option value="lastmonth">Mois dernier</option>
+        <option value="week">Cette semaine</option>
+        <option value="all">Tout</option>
+      </select>
+    </div>
+  </div>
+  <div id="statCards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px"></div>
+  <div class="asec">
+    <div class="ast">📦 Commandes de la période</div>
+    <div id="statOrders"></div>
   </div>
 </div>
 <!-- STRIPE -->
@@ -1175,7 +1247,7 @@ function openMod(id){
     if(g.t==='radio'&&g.items.length)selOpt(g.id,g.items[0].id,'radio');
   });
   const isBgr=['beef','chicken','missile','double','smashbox'].includes(mItem.cat);
-  if(isBgr&&document.getElementById('tglM').classList.contains('on')){
+  if(isBgr&&document.getElementById('tglU').classList.contains('on')){
     oel.innerHTML+='<div class="ogrp"><div class="ogt">🍟 Ajouter un menu ? <span class="obadge obo">Vente+</span></div><div class="oi" id="oi-mf" onclick="togMO(\'mf\',\'Frites maison\',1.50)"><div class="oil"><div class="chk"></div>Frites maison</div><div class="oip">+1,50 €</div></div><div class="oi" id="oi-mb" onclick="togMO(\'mb\',\'Boisson 33cl\',2.50)"><div class="oil"><div class="chk"></div>Boisson 33cl</div><div class="oip">+2,50 €</div></div></div>';
   }
   updMP();document.getElementById('mqv').textContent=mQty;
@@ -1240,8 +1312,18 @@ function renderFB(){const el=document.getElementById('fbarwrap');const sub=getSu
 function toggleCart(){const d=document.getElementById('drw');const o=document.getElementById('dover');const on=d.classList.contains('on');d.classList.toggle('on',!on);o.classList.toggle('on',!on);if(!on)goStep(1);}
 function goStep(n){['s1','s2','s3'].forEach((s,i)=>{const b=document.getElementById(s);b.style.display=i+1===n?'flex':'none';const t=document.getElementById('st'+(i+1));t.className='stab'+(i+1<n?' done':i+1===n?' on':'');});if(n===3){renderRecap();initStripe();}}
 
+// ═══ MODE LIVRAISON ═══
+let curMode='livraison';
+function selMode(m){
+  curMode=m;
+  document.getElementById('mlLiv').classList.toggle('sel',m==='livraison');
+  document.getElementById('mlClick').classList.toggle('sel',m==='click');
+  document.getElementById('adresseFields').style.display=m==='click'?'none':'';
+  document.getElementById('clickInfo').style.display=m==='click'?'block':'none';
+}
+
 // ═══ LIVRAISON ═══
-function valDeliv(){const name=document.getElementById('dName').value.trim();const phone=document.getElementById('dPhone').value.trim();const addr=document.getElementById('dAddr').value.trim();const zip=document.getElementById('dZip').value.trim();const err=document.getElementById('derr');if(!name||!phone||!addr||!zip){err.textContent='⚠️ Remplis tous les champs obligatoires (*)';err.classList.add('on');return;}if(!inZone(zip)){err.textContent='❌ Le code postal '+zip+" n'est pas dans notre zone.";err.classList.add('on');document.getElementById('dZip').classList.add('err');return;}err.classList.remove('on');document.getElementById('dZip').classList.remove('err');goStep(3);}
+function valDeliv(){const name=document.getElementById('dName').value.trim();const phone=document.getElementById('dPhone').value.trim();const err=document.getElementById('derr');if(!name||!phone){err.textContent='⚠️ Remplis tous les champs obligatoires (*)';err.classList.add('on');return;}if(curMode==='livraison'){const addr=document.getElementById('dAddr').value.trim();const zip=document.getElementById('dZip').value.trim();if(!addr||!zip){err.textContent='⚠️ Adresse et code postal obligatoires';err.classList.add('on');return;}if(!inZone(zip)){err.textContent='❌ Le code postal '+zip+" n'est pas dans notre zone.";err.classList.add('on');document.getElementById('dZip').classList.add('err');return;}document.getElementById('dZip').classList.remove('err');}err.classList.remove('on');goStep(3);}
 
 // ═══ PROMO ═══
 let PROMOS=[],activePromo=null;
@@ -1324,9 +1406,9 @@ async function doApple(){
   paymentRequest.show();
 }
 let ORDERS=[];
-function regOrder(){const id='#CMD-'+Math.floor(1000+Math.random()*9000);const msg=document.getElementById('dMsg').value.trim();const zip=document.getElementById('dZip').value.trim();const est=getEstimate(zip);const order={id,status:'new',name:document.getElementById('dName').value,phone:document.getElementById('dPhone').value,email:document.getElementById('dEmail').value,address:document.getElementById('dAddr').value+', '+zip+' '+document.getElementById('dCity').value,notes:document.getElementById('dNotes').value,msg,time_pref:document.getElementById('dTime').value,items:cart.map(l=>l.item.e+' '+l.item.n+(l.opts.length?' ('+l.opts.join(', ')+')':'')+' x'+l.qty).join('\n'),total:f(getTotal()),promo:activePromo?activePromo.code:'',date:new Date().toLocaleDateString('fr-FR'),timestamp:Date.now(),est:est.min+'–'+est.max+' min',rating:0,ratingComment:'',payMethod:curPay==='cash'?'💵 Espèces':curPay==='apple'?'🍎 Apple Pay':'💳 Carte'};if(window.fbSaveOrder)window.fbSaveOrder(order);ORDERS.unshift(order);if(activePromo){activePromo.used++;if(window.fbSavePromos)window.fbSavePromos(PROMOS);activePromo=null;document.getElementById('promoInp').value='';document.getElementById('promoMsg').style.display='none';}document.getElementById('otag').textContent=id;document.getElementById('succEst').textContent=est.min+'–'+est.max+' min';sendNotif(order);setTimeout(()=>openRating(id),30000);}
+function regOrder(){const id='#CMD-'+Math.floor(1000+Math.random()*9000);const msg=document.getElementById('dMsg').value.trim();const zip=curMode==='click'?'93260':document.getElementById('dZip').value.trim();const est=curMode==='click'?{min:15,max:30,travel:0,prep:15,queue:0}:getEstimate(zip);const address=curMode==='click'?'Click & Collect — 81 av. Pasteur, 93260 Les Lilas':document.getElementById('dAddr').value+', '+zip+' '+document.getElementById('dCity').value;const order={id,status:'new',name:document.getElementById('dName').value,phone:document.getElementById('dPhone').value,email:document.getElementById('dEmail').value,address,notes:curMode==='click'?'':document.getElementById('dNotes').value,msg,time_pref:document.getElementById('dTime').value,items:cart.map(l=>l.item.e+' '+l.item.n+(l.opts.length?' ('+l.opts.join(', ')+')':'')+' x'+l.qty).join('\n'),total:f(getTotal()),promo:activePromo?activePromo.code:'',date:new Date().toLocaleDateString('fr-FR'),timestamp:Date.now(),est:est.min+'–'+est.max+' min',rating:0,ratingComment:'',payMethod:curPay==='cash'?'💵 Espèces':curPay==='apple'?'🍎 Apple Pay':'💳 Carte',modeLivraison:curMode==='click'?'🏪 Click & Collect':'🛵 Livraison'};if(window.fbSaveOrder)window.fbSaveOrder(order);ORDERS.unshift(order);if(activePromo){activePromo.used++;if(window.fbSavePromos)window.fbSavePromos(PROMOS);activePromo=null;document.getElementById('promoInp').value='';document.getElementById('promoMsg').style.display='none';}document.getElementById('otag').textContent=id;document.getElementById('succEst').textContent=est.min+'–'+est.max+' min';sendNotif(order);sendEmailNotif(order);setTimeout(()=>openRating(id),30000);}
 function showSucc(){document.getElementById('mdrw').style.display='none';document.getElementById('succ').classList.add('on');}
-function resetOrd(){cart=[];updCart();document.getElementById('mdrw').style.display='flex';document.getElementById('succ').classList.remove('on');toggleCart();goStep(1);['dName','dPhone','dEmail','dAddr','dZip','dCity','dNotes','dMsg','promoInp'].forEach(id=>{document.getElementById(id).value='';});document.getElementById('promoMsg').style.display='none';activePromo=null;stripeEl=null;stripe=null;const pb=document.getElementById('payBtn');pb.disabled=false;pb.innerHTML='🔒 Payer <span id="payAmt"></span>';}
+function resetOrd(){cart=[];updCart();curMode='livraison';selMode('livraison');document.getElementById('mdrw').style.display='flex';document.getElementById('succ').classList.remove('on');toggleCart();goStep(1);['dName','dPhone','dEmail','dAddr','dZip','dCity','dNotes','dMsg','promoInp'].forEach(id=>{document.getElementById(id).value='';});document.getElementById('promoMsg').style.display='none';activePromo=null;stripeEl=null;stripe=null;const pb=document.getElementById('payBtn');pb.disabled=false;pb.innerHTML='🔒 Payer <span id="payAmt"></span>';}
 
 // ═══ NOTIFICATIONS ═══
 function requestNotifPerm(){if('Notification' in window&&Notification.permission==='default')Notification.requestPermission().then(p=>{if(p==='granted')showToast('🔔 Notifications activées !');});}
@@ -1351,8 +1433,72 @@ function sendNotif(order){
 function exportClientDB(){if(!ORDERS.length){showToast('⚠️ Aucune commande à exporter.');return;}const rows=[['ID','Date','Heure','Nom','Téléphone','Email','Adresse','Notes','Message','Articles','Total','Promo','Statut','Note','Commentaire','Délai']];ORDERS.forEach(o=>{rows.push([o.id,o.date||'',o.time||'',o.name,o.phone,o.email||'',o.address,o.notes||'',o.msg||'',o.items?o.items.replace(/\n/g,' | '):'',o.total,o.promo||'',o.status,o.rating||'',o.ratingComment||'',o.est||'']);});const csv=rows.map(r=>r.map(v=>'"'+(String(v).replace(/"/g,'""'))+'"').join(',')).join('\n');const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='commandes_smash_'+new Date().toLocaleDateString('fr-FR').replace(/\//g,'-')+'.csv';a.click();URL.revokeObjectURL(url);showToast('📊 Fichier exporté !');}
 
 // ═══ ADMIN ═══
-const TABS=['design','horaires','menu','upsell','zones','orders','promo','stripe'];
-function aTab(name,btn){TABS.forEach(id=>document.getElementById('tab-'+id).style.display='none');document.getElementById('tab-'+name).style.display='';document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');if(name==='orders')renderOrds();if(name==='menu'){renderACats();renderAProds();}if(name==='zones')renderZtags();if(name==='upsell')renderUpsellA();if(name==='promo')renderPromos();}
+const TABS=['design','horaires','menu','upsell','zones','orders','promo','clients','stats','stripe'];
+function aTab(name,btn){TABS.forEach(id=>document.getElementById('tab-'+id).style.display='none');document.getElementById('tab-'+name).style.display='';document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');if(name==='orders')renderOrds();if(name==='menu'){renderACats();renderAProds();}if(name==='zones')renderZtags();if(name==='upsell')renderUpsellA();if(name==='promo')renderPromos();if(name==='clients')renderClients();if(name==='stats')renderStats();}
+
+// ═══ CLIENTS ═══
+function renderClients(){
+  const q=(document.getElementById('clientQ')?.value||'').toLowerCase();
+  const map={};
+  ORDERS.forEach(o=>{
+    const key=o.phone||o.email||o.name;
+    if(!map[key])map[key]={name:o.name,phone:o.phone,email:o.email||'',cmds:0,total:0,last:o.date};
+    map[key].cmds++;
+    map[key].total+=parseFloat((o.total||'0').replace(',','.').replace(' €',''))||0;
+    map[key].last=o.date;
+  });
+  const clients=Object.values(map).filter(c=>!q||c.name.toLowerCase().includes(q)||c.phone.includes(q)||c.email.toLowerCase().includes(q));
+  clients.sort((a,b)=>b.cmds-a.cmds);
+  const el=document.getElementById('clientList');
+  if(!clients.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);text-align:center;padding:20px 0">Aucun client pour l\'instant.</p>';return;}
+  el.innerHTML='<div style="font-size:10px;font-weight:800;color:var(--muted);margin-bottom:8px">'+clients.length+' client(s)</div>'+
+  clients.map(c=>'<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:7px">'+
+    '<div style="font-weight:900;font-size:13px;color:var(--p)">'+c.name+'</div>'+
+    '<div style="font-size:11px;margin-top:3px">📞 <a href="tel:'+c.phone+'" style="color:var(--text);text-decoration:none">'+c.phone+'</a></div>'+
+    (c.email?'<div style="font-size:11px;color:var(--muted)">✉️ '+c.email+'</div>':'')+
+    '<div style="display:flex;gap:12px;margin-top:7px;font-size:11px">'+
+    '<span style="background:var(--pl);color:var(--p);padding:3px 9px;border-radius:50px;font-weight:800">'+c.cmds+' cmd'+(c.cmds>1?'s':'')+'</span>'+
+    '<span style="font-weight:700">'+c.total.toFixed(2).replace('.',',')+'€ total</span>'+
+    '<span style="color:var(--muted)">Dernière : '+c.last+'</span>'+
+    '</div></div>'
+  ).join('');
+}
+
+// ═══ STATS ═══
+function renderStats(){
+  const period=document.getElementById('statPeriod')?.value||'month';
+  const now=new Date();
+  const filtered=ORDERS.filter(o=>{
+    if(!o.timestamp)return period==='all';
+    const d=new Date(o.timestamp);
+    if(period==='all')return true;
+    if(period==='week'){const w=new Date(now);w.setDate(now.getDate()-7);return d>=w;}
+    if(period==='month')return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+    if(period==='lastmonth'){const lm=new Date(now.getFullYear(),now.getMonth()-1,1);const lme=new Date(now.getFullYear(),now.getMonth(),0);return d>=lm&&d<=lme;}
+    return true;
+  });
+  const totalCA=filtered.reduce((s,o)=>s+parseFloat((o.total||'0').replace(',','.').replace(' €',''))||0,0);
+  const avg=filtered.length?totalCA/filtered.length:0;
+  const livraison=filtered.filter(o=>!o.modeLivraison||o.modeLivraison.includes('Livraison')).length;
+  const collect=filtered.filter(o=>o.modeLivraison&&o.modeLivraison.includes('Collect')).length;
+  const cash=filtered.filter(o=>o.payMethod&&o.payMethod.includes('Espèces')).length;
+  const card=filtered.filter(o=>!o.payMethod||o.payMethod.includes('Carte')).length;
+  const apple=filtered.filter(o=>o.payMethod&&o.payMethod.includes('Apple')).length;
+  const sc=n=>'<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center"><div style="font-size:22px;font-weight:900;color:var(--p)">'+n.val+'</div><div style="font-size:10px;font-weight:700;color:var(--muted);margin-top:2px">'+n.lbl+'</div></div>';
+  document.getElementById('statCards').innerHTML=
+    sc({val:filtered.length,lbl:'Commandes'})+
+    sc({val:totalCA.toFixed(2).replace('.',',')+'€',lbl:'Chiffre d\'affaires'})+
+    sc({val:avg.toFixed(2).replace('.',',')+'€',lbl:'Panier moyen'})+
+    sc({val:livraison+' / '+collect,lbl:'Livraison / Collect'})+
+    sc({val:card+' CB · '+apple+' Apple · '+cash+' Cash',lbl:'Paiements'})+
+    sc({val:[...new Set(filtered.map(o=>o.phone).filter(Boolean))].length,lbl:'Clients uniques'});
+  const el=document.getElementById('statOrders');
+  if(!filtered.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);text-align:center;padding:16px 0">Aucune commande sur cette période.</p>';return;}
+  el.innerHTML=filtered.map(o=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;font-size:11px">'+
+    '<div><div style="font-weight:800;color:var(--p)">'+o.id+'</div><div style="color:var(--muted)">'+o.name+' · '+o.date+'</div><div style="margin-top:2px">'+o.modeLivraison+'</div></div>'+
+    '<div style="text-align:right"><div style="font-weight:900;font-size:13px">'+o.total+'</div><div style="color:var(--muted)">'+o.payMethod+'</div></div></div>'
+  ).join('');
+}
 function applyTxt(){const nm=document.getElementById('aN').value||'SMASH by Bubblesuz';const slg=document.getElementById('aS').value;const ht=document.getElementById('aHT').value;const hd=document.getElementById('aHD').value;document.getElementById('lname').textContent=nm;document.getElementById('ltag').textContent=slg;document.getElementById('htitle').innerHTML=ht;document.getElementById('hdesc').textContent=hd;document.getElementById('flogo').textContent=nm;document.title=nm;C.name=nm;C.slogan=slg;C.htitle=ht;C.hdesc=hd;if(window.fbSaveInfo)window.fbSaveInfo(C);showToast('✅ Textes mis à jour !');}
 function applyHI(){const rv=document.getElementById('aR').value;const dv=document.getElementById('aD').value;document.getElementById('irating').textContent=rv;document.getElementById('idelay').textContent=dv;C.rating=rv;C.delay=dv;if(window.fbSaveInfo)window.fbSaveInfo(C);showToast('✅ Infos mises à jour !');}
 function applyClr(p,pd,sw){document.querySelectorAll('.csw').forEach(s=>s.classList.remove('on'));if(sw)sw.classList.add('on');setClr(p,pd);document.getElementById('cpH').value=p;document.getElementById('cpi').value=p;showToast('🎨 Couleur appliquée !');}
