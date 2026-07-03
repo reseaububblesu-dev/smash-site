@@ -6,7 +6,6 @@
 <title>SMASH by Bubblesuz — Livraison Paris</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -172,6 +171,7 @@ window.fbLoadUpsellByCat = async () => {
     return snap.exists ? snap.data() : null;
   } catch(e) { return null; }
 };
+function rgb2h(r,g,b){return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function dk(h,a){let[r,g,b]=hrgb(h);return rgb2h(Math.max(0,Math.round(r*(1-a))),Math.max(0,Math.round(g*(1-a))),Math.max(0,Math.round(b*(1-a))));}
 function h2l(h){let[r,g,b]=hrgb(h);return'rgba('+r+','+g+','+b+',.09)';}
 function hrgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
@@ -210,11 +210,54 @@ window.fbInit = async () => {
       if(typeof updCart==='function') updCart();
       if(typeof updSt==='function') updSt();
     }
+    // ═══ WAKE LOCK (empêche l'écran de se mettre en veille) ═══
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          console.log('WakeLock actif');
+        }
+      } catch(e) { console.log('WakeLock non supporté:', e); }
+    }
+    document.addEventListener('visibilitychange', async () => {
+      if(wakeLock !== null && document.visibilityState === 'visible') {
+        await requestWakeLock();
+      }
+    });
+
+    // ═══ SON D'ALARME ═══
+    function playAlarm() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const beep = (freq, start, duration) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.frequency.value = freq;
+          osc.type = 'sine';
+          gain.gain.setValueAtTime(0.8, ctx.currentTime + start);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration);
+          osc.start(ctx.currentTime + start);
+          osc.stop(ctx.currentTime + start + duration + 0.1);
+        };
+        beep(880, 0, 0.15);
+        beep(1100, 0.2, 0.15);
+        beep(880, 0.4, 0.15);
+        beep(1100, 0.6, 0.3);
+      } catch(e) { console.log('Audio error:', e); }
+    }
+
     window.fbListenOrders((orders) => {
       const prevCount = ORDERS.filter(o=>o.status==='new').length;
       ORDERS = orders;
       const newCount = orders.filter(o=>o.status==='new').length;
-      if(newCount > prevCount && orders.length > 0) sendNotification(orders[0]);
+      if(newCount > prevCount && orders.length > 0) {
+        sendNotif(orders[0]);
+        playAlarm();
+        if('vibrate' in navigator) navigator.vibrate([400,100,400,100,400]);
+      }
       if(document.getElementById('apnl').classList.contains('on')) renderOrds();
     });
     console.log("✅ Firebase connecté !");
@@ -590,7 +633,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     <main class="mmain" id="mmain" style="padding-top:10px"></main>
   </div>
 </div>
-<!-- ALLERGENS -->
 <section style="background:var(--bg2);border-top:1px solid var(--border);padding:28px 18px">
   <div style="max-width:1180px;margin:0 auto">
     <div style="font-size:13px;font-weight:900;margin-bottom:12px;color:var(--text)">⚠️ Informations allergènes</div>
@@ -652,7 +694,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     <button class="uno" onclick="closeUp()">Non merci</button>
   </div>
 </div></div>
-<!-- DRAWER -->
 <div class="dover" id="dover" onclick="toggleCart()"></div>
 <div class="drw" id="drw">
 <div id="mdrw" style="display:flex;flex-direction:column;height:100%">
@@ -745,14 +786,14 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
 <div class="succ" id="succ">
   <div class="succ-ico">✓</div><h2>Confirmée ! 🎉</h2>
   <div class="otag" id="otag">#CMD-0000</div>
-  <p>Merci pour votre commande ! Restez disponible et joignable jusqu'à la livraison.</p>
+  <p id="succMsg">Merci pour votre commande ! Restez disponible et joignable jusqu'à la livraison.</p>
   <div style="background:linear-gradient(135deg,var(--pl),var(--bg2));border:1px solid rgba(232,82,138,.2);border-radius:12px;padding:14px 20px;text-align:center;width:100%">
-    <div style="font-size:22px;margin-bottom:4px">🕐</div>
-    <div style="font-size:18px;font-weight:900">Livraison estimée</div>
+    <div style="font-size:22px;margin-bottom:4px" id="succIco">🕐</div>
+    <div style="font-size:18px;font-weight:900" id="succLabel">Livraison estimée</div>
     <div style="font-size:28px;font-weight:900;color:var(--p)" id="succEst">30–40 min</div>
-    <div style="font-size:11px;color:var(--muted);margin-top:2px">depuis Les Lilas 81 av. Pasteur</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px" id="succSub">depuis Les Lilas 81 av. Pasteur</div>
   </div>
-  <button class="cta sec" style="max-width:220px;font-size:12px;padding:10px" onclick="openRating(document.getElementById('otag').textContent)">⭐ Noter ma livraison</button>
+  <button class="cta sec" style="max-width:220px;font-size:12px;padding:10px" onclick="openRating(document.getElementById('otag').textContent)">⭐ Noter ma commande</button>
   <button class="cta" style="max-width:180px;margin-top:4px" onclick="resetOrd()">Nouvelle commande</button>
 </div>
 </div>
@@ -808,6 +849,10 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
 </div>
 </div>
 <!-- ADMIN PANEL -->
+<div id="kioskBar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:#1a0a12;color:#fff;font-size:11px;font-weight:800;text-align:center;padding:7px;letter-spacing:.5px">
+  🔒 MODE CAISSE ACTIF — <span id="kioskTime" style="color:#E8528A"></span>
+  <button onclick="exitKiosk()" style="margin-left:12px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:10px;padding:3px 10px;border-radius:20px;cursor:pointer">Quitter</button>
+</div>
 <div class="aov" id="aov"></div>
 <div class="apnl" id="apnl">
 <div class="ahead">
@@ -817,6 +862,7 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
   </div>
   <div style="display:flex;gap:6px;align-items:center">
     <button onclick="saveAndBack()" style="background:#fff;border:none;color:var(--p);font-family:Nunito,sans-serif;font-size:11px;font-weight:900;padding:7px 12px;border-radius:7px;cursor:pointer;white-space:nowrap">✓ Sauvegarder</button>
+    <button onclick="enterKiosk()" style="background:rgba(255,255,255,.15);border:none;color:#fff;font-family:Nunito,sans-serif;font-size:11px;font-weight:700;padding:7px 10px;border-radius:7px;cursor:pointer;white-space:nowrap">📟 Caisse</button>
     <button onclick="lockAdmin()" style="background:rgba(255,255,255,.15);border:none;color:#fff;font-family:Nunito,sans-serif;font-size:11px;font-weight:700;padding:7px 10px;border-radius:7px;cursor:pointer;white-space:nowrap">🔒</button>
     <button class="ax" onclick="closeAdmin()">✕</button>
   </div>
@@ -834,7 +880,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
   <div class="atab" onclick="aTab('stripe',this)">💳 Paiement</div>
 </div>
 <div class="abody">
-<!-- DESIGN -->
 <div id="tab-design">
   <div class="asec"><div class="ast">🔐 Mot de passe admin</div>
     <div style="display:flex;gap:7px">
@@ -877,7 +922,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     <div id="bannerStatus" style="font-size:11px;color:var(--ok);display:none;margin-top:4px">✅ Bannière chargée</div>
   </div>
 </div>
-<!-- HORAIRES -->
 <div id="tab-horaires" style="display:none">
   <div class="asec"><div class="ast">🕐 Horaires d'ouverture</div>
     <p style="font-size:11px;color:var(--muted);margin-bottom:11px;line-height:1.55">Le site affiche Ouvert/Fermé automatiquement selon ces horaires.</p>
@@ -889,7 +933,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     <button class="ab" onclick="saveCM()">✓ Appliquer</button>
   </div>
 </div>
-<!-- MENU -->
 <div id="tab-menu" style="display:none">
   <div class="asec"><div class="ast">📂 Catégories</div>
     <div style="display:flex;gap:6px;margin-bottom:7px">
@@ -928,7 +971,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     </div>
   </div>
 </div>
-<!-- ZONES -->
 <div id="tab-zones" style="display:none">
   <div class="asec"><div class="ast">📍 Zones actives</div><div class="ztags" id="ztags"></div></div>
   <div class="asec"><div class="ast">➕ Ajouter une zone</div>
@@ -939,7 +981,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     </div>
   </div>
 </div>
-<!-- COMMANDES -->
 <div id="tab-orders" style="display:none">
   <div class="asec"><div class="ast" style="display:flex;align-items:center;gap:5px"><span class="dot"></span>Commandes <span id="ocnt" style="margin-left:auto;font-size:10px;color:var(--muted)"></span><button class="ab" style="padding:4px 9px;font-size:10px;margin-left:6px" onclick="exportClientDB()">📊 Exporter CSV</button></div>
     <div id="ordList"><p style="font-size:12px;color:var(--muted);text-align:center;padding:22px 0">Aucune commande pour l'instant.</p></div>
@@ -972,7 +1013,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     </div>
   </div>
 </div>
-<!-- CLIENTS -->
 <div id="tab-clients" style="display:none">
   <div class="asec">
     <div class="ast">👥 Base clients</div>
@@ -983,7 +1023,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     <div id="clientList"></div>
   </div>
 </div>
-<!-- STATS -->
 <div id="tab-stats" style="display:none">
   <div class="asec">
     <div class="ast">📅 Période</div>
@@ -1002,7 +1041,6 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
     <div id="statOrders"></div>
   </div>
 </div>
-<!-- STRIPE -->
 <div id="tab-stripe" style="display:none">
   <div class="asec"><div class="ast">💳 Clé Stripe</div>
     <p style="font-size:11px;color:var(--muted);margin-bottom:9px;line-height:1.55">Créez votre compte sur <a href="https://stripe.com" target="_blank" style="color:var(--p);font-weight:700">stripe.com</a> puis collez votre clé publique.</p>
@@ -1145,7 +1183,33 @@ function checkAdminPwd(){
   }
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('adminLoginOv').style.display==='flex')checkAdminPwd();});
-function launchAdmin(){
+let kioskMode = false;
+let kioskInterval = null;
+
+function enterKiosk(){
+  kioskMode = true;
+  document.getElementById('kioskBar').style.display = 'block';
+  document.getElementById('apnl').style.paddingTop = '36px';
+  // Aller direct sur l'onglet commandes
+  document.querySelector('.atab').click();
+  const ordTab = [...document.querySelectorAll('.atab')].find(t=>t.textContent.includes('Cmds'));
+  if(ordTab) ordTab.click();
+  // Horloge en temps réel
+  kioskInterval = setInterval(()=>{
+    document.getElementById('kioskTime').textContent = new Date().toLocaleTimeString('fr-FR');
+  }, 1000);
+  showToast('🔒 Mode Caisse activé !');
+}
+
+function exitKiosk(){
+  kioskMode = false;
+  document.getElementById('kioskBar').style.display = 'none';
+  document.getElementById('apnl').style.paddingTop = '';
+  if(kioskInterval) clearInterval(kioskInterval);
+  showToast('Mode Caisse désactivé');
+}
+
+function launchAdmin(){requestWakeLock();
   document.getElementById('apnl').classList.add('on');
   document.getElementById('aov').classList.add('on');
   renderHours();renderACats();renderAProds();renderZtags();renderOrds();renderUpsellA();renderPromos();
@@ -1308,7 +1372,7 @@ renderMenu();
 
 // ═══ MODAL PRODUIT ═══
 let mItem=null,mQty=1,mOpts={};
-function openMod(id){
+function openMod(id){if(!isOpen()){showToast('🔴 Restaurant fermé — revenez plus tard !');return;}
   mItem=MENU.find(m=>m.id===id);if(!mItem)return;
   mQty=1;mOpts={};
   const iw=document.getElementById('mImg');
@@ -1385,7 +1449,7 @@ function cQ(i,d){cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);else cart[i].
 function renderFB(){const el=document.getElementById('fbarwrap');const sub=getSub();if(!cart.length){el.innerHTML='';return;}if(sub>=C.freeAt)el.innerHTML='<div class="fbar">🎉 Livraison offerte !</div>';else{const pct=Math.min(sub/C.freeAt*100,100);const lft=(C.freeAt-sub).toFixed(2).replace('.',',');el.innerHTML='<div class="fbar">Plus que '+lft+' € pour la livraison offerte !<div class="prog"><div class="progf" style="width:'+pct+'%"></div></div></div>';}}
 
 // ═══ DRAWER ═══
-function toggleCart(){const d=document.getElementById('drw');const o=document.getElementById('dover');const on=d.classList.contains('on');d.classList.toggle('on',!on);o.classList.toggle('on',!on);if(!on)goStep(1);}
+function toggleCart(){if(!isOpen()&&cart.length===0){showToast('🔴 Nous sommes actuellement fermés — revenez plus tard !');return;}const d=document.getElementById('drw');const o=document.getElementById('dover');const on=d.classList.contains('on');d.classList.toggle('on',!on);o.classList.toggle('on',!on);if(!on)goStep(1);}
 function goStep(n){['s1','s2','s3'].forEach((s,i)=>{const b=document.getElementById(s);b.style.display=i+1===n?'flex':'none';const t=document.getElementById('st'+(i+1));t.className='stab'+(i+1<n?' done':i+1===n?' on':'');});if(n===3){renderRecap();initStripe();}}
 
 // ═══ MODE LIVRAISON ═══
@@ -1482,7 +1546,21 @@ async function doApple(){
   paymentRequest.show();
 }
 let ORDERS=[];
-function regOrder(){const id='#CMD-'+Math.floor(1000+Math.random()*9000);const msg=document.getElementById('dMsg').value.trim();const zip=curMode==='click'?'93260':document.getElementById('dZip').value.trim();const est=curMode==='click'?{min:15,max:30,travel:0,prep:15,queue:0}:getEstimate(zip);const address=curMode==='click'?'Click & Collect — 81 av. Pasteur, 93260 Les Lilas':document.getElementById('dAddr').value+', '+zip+' '+document.getElementById('dCity').value;const order={id,status:'new',name:document.getElementById('dName').value,phone:document.getElementById('dPhone').value,email:document.getElementById('dEmail').value,address,notes:curMode==='click'?'':document.getElementById('dNotes').value,msg,time_pref:document.getElementById('dTime').value,items:cart.map(l=>l.item.e+' '+l.item.n+(l.opts.length?' ('+l.opts.join(', ')+')':'')+' x'+l.qty).join('\n'),total:f(getTotal()),promo:activePromo?activePromo.code:'',date:new Date().toLocaleDateString('fr-FR'),timestamp:Date.now(),est:est.min+'–'+est.max+' min',rating:0,ratingComment:'',payMethod:curPay==='cash'?'💵 Espèces':curPay==='apple'?'🍎 Apple Pay':'💳 Carte',modeLivraison:curMode==='click'?'🏪 Click & Collect':'🛵 Livraison'};if(window.fbSaveOrder)window.fbSaveOrder(order);ORDERS.unshift(order);if(activePromo){activePromo.used++;if(window.fbSavePromos)window.fbSavePromos(PROMOS);activePromo=null;document.getElementById('promoInp').value='';document.getElementById('promoMsg').style.display='none';}document.getElementById('otag').textContent=id;document.getElementById('succEst').textContent=est.min+'–'+est.max+' min';sendNotif(order);sendEmailNotif(order);setTimeout(()=>openRating(id),30000);}
+function regOrder(){const id='#CMD-'+Math.floor(1000+Math.random()*9000);const msg=document.getElementById('dMsg').value.trim();const zip=curMode==='click'?'93260':document.getElementById('dZip').value.trim();const est=curMode==='click'?{min:15,max:30,travel:0,prep:15,queue:0}:getEstimate(zip);const address=curMode==='click'?'Click & Collect — 81 av. Pasteur, 93260 Les Lilas':document.getElementById('dAddr').value+', '+zip+' '+document.getElementById('dCity').value;const order={id,status:'new',name:document.getElementById('dName').value,phone:document.getElementById('dPhone').value,email:document.getElementById('dEmail').value,address,notes:curMode==='click'?'':document.getElementById('dNotes').value,msg,time_pref:document.getElementById('dTime').value,items:cart.map(l=>l.item.e+' '+l.item.n+(l.opts.length?' ('+l.opts.join(', ')+')':'')+' x'+l.qty).join('\n'),total:f(getTotal()),promo:activePromo?activePromo.code:'',date:new Date().toLocaleDateString('fr-FR'),timestamp:Date.now(),est:est.min+'–'+est.max+' min',rating:0,ratingComment:'',payMethod:curPay==='cash'?'💵 Espèces':curPay==='apple'?'🍎 Apple Pay':'💳 Carte',modeLivraison:curMode==='click'?'🏪 Click & Collect':'🛵 Livraison'};if(window.fbSaveOrder)window.fbSaveOrder(order);ORDERS.unshift(order);if(activePromo){activePromo.used++;if(window.fbSavePromos)window.fbSavePromos(PROMOS);activePromo=null;document.getElementById('promoInp').value='';document.getElementById('promoMsg').style.display='none';}document.getElementById('otag').textContent=id;
+  if(curMode==='click'){
+    document.getElementById('succMsg').textContent='Votre commande est confirmée ! Vous pouvez vous présenter au restaurant dans environ 20 min, elle sera prête.';
+    document.getElementById('succIco').textContent='🏪';
+    document.getElementById('succLabel').textContent='Prête dans environ';
+    document.getElementById('succEst').textContent='20 min';
+    document.getElementById('succSub').textContent='81 avenue Pasteur, 93260 Les Lilas';
+  } else {
+    document.getElementById('succMsg').textContent='Merci pour votre commande ! Restez disponible et joignable jusqu\'à la livraison.';
+    document.getElementById('succIco').textContent='🕐';
+    document.getElementById('succLabel').textContent='Livraison estimée';
+    document.getElementById('succEst').textContent=est.min+'–'+est.max+' min';
+    document.getElementById('succSub').textContent='depuis Les Lilas 81 av. Pasteur';
+  }
+  sendNotif(order);sendEmailNotif(order);setTimeout(()=>openRating(id),30000);}
 function showSucc(){document.getElementById('mdrw').style.display='none';document.getElementById('succ').classList.add('on');}
 function resetOrd(){cart=[];updCart();curMode='livraison';selMode('livraison');document.getElementById('mdrw').style.display='flex';document.getElementById('succ').classList.remove('on');toggleCart();goStep(1);['dName','dPhone','dEmail','dAddr','dZip','dCity','dNotes','dMsg','promoInp'].forEach(id=>{document.getElementById(id).value='';});document.getElementById('promoMsg').style.display='none';activePromo=null;stripeEl=null;stripe=null;const pb=document.getElementById('payBtn');pb.disabled=false;pb.innerHTML='🔒 Payer <span id="payAmt"></span>';}
 
@@ -1610,7 +1688,6 @@ function applyClr(p,pd,sw){document.querySelectorAll('.csw').forEach(s=>s.classL
 function applyCuC(){const h=document.getElementById('cpH').value.trim();if(!/^#[0-9A-Fa-f]{6}$/.test(h)){showToast('⚠️ Format invalide');return;}setClr(h,dk(h,.15));showToast('🎨 Couleur personnalisée !');}
 function setClr(p,pd){const r=document.documentElement;r.style.setProperty('--p',p);r.style.setProperty('--pd',pd);r.style.setProperty('--pl',h2l(p));stripeEl=null;stripe=null;C.colorP=p;C.colorPd=pd;if(window.fbSaveInfo)window.fbSaveInfo(C);}
 document.getElementById('cpi').addEventListener('input',e=>{document.getElementById('cpH').value=e.target.value;});
-function rgb2h(r,g,b){return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function changePwd(){const v=document.getElementById('newPwd').value.trim();if(!v||v.length<4){showToast('⚠️ Mot de passe trop court');return;}showToast('⚙️ Pour changer définitivement, modifie ADMIN_PWD dans le code HTML');document.getElementById('newPwd').value='';}
 function renderHours(){
   const el=document.getElementById('hgrid');
