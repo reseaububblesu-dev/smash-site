@@ -14,22 +14,7 @@
 <meta name="theme-color" content="#E8528A">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23E8528A'/><text y='.9em' font-size='75' x='12'>🍔</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<!-- PWA INSTALL BANNER -->
-<div id="pwaBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:#fff;border-top:2px solid var(--border);padding:14px 18px;box-shadow:0 -4px 20px rgba(0,0,0,.12)">
-  <div style="display:flex;align-items:center;gap:12px">
-    <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--pd));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🍔</div>
-    <div style="flex:1">
-      <div style="font-size:13px;font-weight:900;color:var(--text)">SMASH by Bubblesuz</div>
-      <div style="font-size:11px;color:var(--muted)">Installer l'app sur ton téléphone</div>
-    </div>
-    <button id="pwaInstallBtn" style="background:linear-gradient(135deg,var(--p),var(--pd));border:none;color:#fff;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap">Installer</button>
-    <button onclick="document.getElementById('pwaBanner').style.display='none'" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0 4px">×</button>
-  </div>
-  <!-- iOS instruction -->
-  <div id="iosInstall" style="display:none;margin-top:10px;background:var(--pl);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text);line-height:1.6">
-    Sur iPhone : appuie sur <strong>⬆️ Partager</strong> puis <strong>"Sur l'écran d'accueil"</strong>
-  </div>
-</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -210,18 +195,18 @@ window.fbInit = async () => {
       if(typeof updCart==='function') updCart();
       if(typeof updSt==='function') updSt();
     }
-    // ═══ WAKE LOCK (empêche l'écran de se mettre en veille) ═══
-    let wakeLock = null;
-    async function requestWakeLock() {
+    // ═══ WAKE LOCK ═══
+    if(!window._wakeLock) window._wakeLock = null;
+    window.requestWakeLock = async function() {
       try {
         if('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
+          window._wakeLock = await navigator.wakeLock.request('screen');
           console.log('WakeLock actif');
         }
       } catch(e) { console.log('WakeLock non supporté:', e); }
-    }
+    };
     document.addEventListener('visibilitychange', async () => {
-      if(wakeLock !== null && document.visibilityState === 'visible') {
+      if(window._wakeLock !== null && document.visibilityState === 'visible') {
         await requestWakeLock();
       }
     });
@@ -582,6 +567,22 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
 </style>
 </head>
 <body>
+<!-- PWA INSTALL BANNER -->
+<div id="pwaBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:#fff;border-top:2px solid var(--border);padding:14px 18px;box-shadow:0 -4px 20px rgba(0,0,0,.12)">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--pd));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🍔</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:900;color:var(--text)">SMASH by Bubblesuz</div>
+      <div style="font-size:11px;color:var(--muted)">Installer l'app sur ton téléphone</div>
+    </div>
+    <button id="pwaInstallBtn" style="background:linear-gradient(135deg,var(--p),var(--pd));border:none;color:#fff;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap">Installer</button>
+    <button onclick="document.getElementById('pwaBanner').style.display='none'" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0 4px">×</button>
+  </div>
+  <!-- iOS instruction -->
+  <div id="iosInstall" style="display:none;margin-top:10px;background:var(--pl);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text);line-height:1.6">
+    Sur iPhone : appuie sur <strong>⬆️ Partager</strong> puis <strong>"Sur l'écran d'accueil"</strong>
+  </div>
+</div>
 <div id="cb">🔴 <span id="ctxt">Fermé</span> — Prochaine ouverture : <span id="nxt"></span></div>
 <div class="toast" id="toast"></div>
 <header><div class="hdr">
@@ -761,7 +762,7 @@ footer{border-top:1px solid var(--border);padding:22px 18px;text-align:center;co
         <div class="pm" id="pmCash" onclick="selPay('cash')"><div class="ic">💵</div>Espèces</div>
       </div>
       <div id="cashWarn" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:11.5px;line-height:1.7;color:var(--muted);margin-bottom:10px">
-        ⚠️ <strong style="color:var(--ink)">Paiement en espèces</strong><br>
+        ⚠️ <strong style="color:var(--text)">Paiement en espèces</strong><br>
         Le paiement s'effectue à la livraison. Les délais peuvent être rallongés selon l'affluence — merci de rester disponible et joignable.<br>
         <strong style="color:var(--p)">Toute commande confirmée est due.</strong>
       </div>
@@ -1156,6 +1157,7 @@ function secretClick(){
   secretTimer=setTimeout(()=>{secretClicks=0;},2000);
   if(secretClicks>=5){secretClicks=0;showAdminLogin();}
 }
+function closeAdminLogin(){document.getElementById('adminLoginOv').style.display='none';}
 function showAdminLogin(){
   const ov=document.getElementById('adminLoginOv');
   ov.style.cssText='display:flex;position:fixed;inset:0;background:rgba(26,10,18,.55);backdrop-filter:blur(6px);z-index:700;align-items:center;justify-content:center;padding:16px';
@@ -1209,7 +1211,7 @@ function exitKiosk(){
   showToast('Mode Caisse désactivé');
 }
 
-function launchAdmin(){requestWakeLock();
+function launchAdmin(){if(window.requestWakeLock)window.requestWakeLock();
   document.getElementById('apnl').classList.add('on');
   document.getElementById('aov').classList.add('on');
   renderHours();renderACats();renderAProds();renderZtags();renderOrds();renderUpsellA();renderPromos();
