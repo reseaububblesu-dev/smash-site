@@ -1,0 +1,162 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cg {
+      position: absolute; left: 120px; width: 660px; top: 1080px; text-align: center;
+      opacity: 0; transform-origin: 50% 50%;
+    }
+    .cw { padding: 0 6px; border-radius: 4px; background-color: rgba(168,15,87,0); }
+    .cbox {
+      display: inline; background: #F82D8C; color: #fff; padding: 2px 16px 6px;
+      font-family: "Archivo Black", sans-serif; font-size: 56px; line-height: 1.38;
+      box-decoration-break: clone; -webkit-box-decoration-break: clone;
+    }
+    .cg { padding: 0; box-sizing: border-box; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920" data-layout-allow-overflow>
+      <div class="cg" id="cg0"><span class="cbox"><span class="cw" id="cw0_0">PREMIER</span> <span class="cw" id="cw0_1">INDICE :</span></span></div>
+      <div class="cg" id="cg1"><span class="cbox"><span class="cw" id="cw1_0">DES</span> <span class="cw" id="cw1_1">SMASH</span> <span class="cw" id="cw1_2">BURGERS,</span></span></div>
+      <div class="cg" id="cg2"><span class="cbox"><span class="cw" id="cw2_0">ÉCRASÉS</span> <span class="cw" id="cw2_1">MINUTE</span></span></div>
+      <div class="cg" id="cg3"><span class="cbox"><span class="cw" id="cw3_0">SUR</span> <span class="cw" id="cw3_1">LA</span> <span class="cw" id="cw3_2">PLANCHA.</span></span></div>
+      <div class="cg" id="cg4"><span class="cbox"><span class="cw" id="cw4_0">LE</span> <span class="cw" id="cw4_1">FROMAGE</span> <span class="cw" id="cw4_2">QUI</span> <span class="cw" id="cw4_3">COULE…</span></span></div>
+      <div class="cg" id="cg5"><span class="cbox"><span class="cw" id="cw5_0">ET</span> <span class="cw" id="cw5_1">LES</span> <span class="cw" id="cw5_2">FRITES</span></span></div>
+      <div class="cg" id="cg6"><span class="cbox"><span class="cw" id="cw6_0">QUI</span> <span class="cw" id="cw6_1">VONT</span> <span class="cw" id="cw6_2">AVEC.</span></span></div>
+      <div class="cg" id="cg7"><span class="cbox"><span class="cw" id="cw7_0">DEUXIÈME</span> <span class="cw" id="cw7_1">INDICE :</span></span></div>
+      <div class="cg" id="cg8"><span class="cbox"><span class="cw" id="cw8_0">LE</span> <span class="cw" id="cw8_1">POULET</span> <span class="cw" id="cw8_2">FRIT,</span></span></div>
+      <div class="cg" id="cg9"><span class="cbox"><span class="cw" id="cw9_0">BIEN</span> <span class="cw" id="cw9_1">CROUSTILLANT.</span></span></div>
+      <div class="cg" id="cg10"><span class="cbox"><span class="cw" id="cw10_0">ET</span> <span class="cw" id="cw10_1">POUR</span> <span class="cw" id="cw10_2">FINIR…</span></span></div>
+      <div class="cg" id="cg11"><span class="cbox"><span class="cw" id="cw11_0">LES</span> <span class="cw" id="cw11_1">MILKSHAKES.</span></span></div>
+      <div class="cg" id="cg12"><span class="cbox"><span class="cw" id="cw12_0">SMASH</span> <span class="cw" id="cw12_1">BY</span> <span class="cw" id="cw12_2">BUBBLE</span> <span class="cw" id="cw12_3">SÜ.</span></span></div>
+      <div class="cg" id="cg13"><span class="cbox"><span class="cw" id="cw13_0">AVENUE</span> <span class="cw" id="cw13_1">PASTEUR,</span></span></div>
+      <div class="cg" id="cg14"><span class="cbox"><span class="cw" id="cw14_0">AUX</span> <span class="cw" id="cw14_1">LILAS.</span></span></div>
+  </div>
+  <script>
+  const tl = gsap.timeline({ paused: true });
+  tl.set("#cw0_0", { backgroundColor: "#A80F57" }, 2.40);
+  tl.set("#cw0_0", { backgroundColor: "rgba(168,15,87,0)" }, 2.84);
+  tl.set("#cw0_1", { backgroundColor: "#A80F57" }, 2.84);
+  tl.set("#cw0_1", { backgroundColor: "rgba(168,15,87,0)" }, 3.27);
+  tl.fromTo("#cg0", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 2.35);
+  tl.to("#cg0", { opacity: 0, duration: 0.08, ease: "power2.in" }, 3.19);
+  tl.set("#cg0", { visibility: "hidden" }, 3.27);
+  tl.set("#cw1_0", { backgroundColor: "#A80F57" }, 3.32);
+  tl.set("#cw1_0", { backgroundColor: "rgba(168,15,87,0)" }, 3.54);
+  tl.set("#cw1_1", { backgroundColor: "#A80F57" }, 3.54);
+  tl.set("#cw1_1", { backgroundColor: "rgba(168,15,87,0)" }, 3.91);
+  tl.set("#cw1_2", { backgroundColor: "#A80F57" }, 3.91);
+  tl.set("#cw1_2", { backgroundColor: "rgba(168,15,87,0)" }, 4.57);
+  tl.fromTo("#cg1", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 3.27);
+  tl.to("#cg1", { opacity: 0, duration: 0.08, ease: "power2.in" }, 4.49);
+  tl.set("#cg1", { visibility: "hidden" }, 4.57);
+  tl.set("#cw2_0", { backgroundColor: "#A80F57" }, 4.62);
+  tl.set("#cw2_0", { backgroundColor: "rgba(168,15,87,0)" }, 4.98);
+  tl.set("#cw2_1", { backgroundColor: "#A80F57" }, 4.98);
+  tl.set("#cw2_1", { backgroundColor: "rgba(168,15,87,0)" }, 5.48);
+  tl.fromTo("#cg2", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 4.57);
+  tl.to("#cg2", { opacity: 0, duration: 0.08, ease: "power2.in" }, 5.40);
+  tl.set("#cg2", { visibility: "hidden" }, 5.48);
+  tl.set("#cw3_0", { backgroundColor: "#A80F57" }, 5.53);
+  tl.set("#cw3_0", { backgroundColor: "rgba(168,15,87,0)" }, 5.59);
+  tl.set("#cw3_1", { backgroundColor: "#A80F57" }, 5.59);
+  tl.set("#cw3_1", { backgroundColor: "rgba(168,15,87,0)" }, 5.71);
+  tl.set("#cw3_2", { backgroundColor: "#A80F57" }, 5.71);
+  tl.set("#cw3_2", { backgroundColor: "rgba(168,15,87,0)" }, 6.39);
+  tl.fromTo("#cg3", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 5.48);
+  tl.to("#cg3", { opacity: 0, duration: 0.08, ease: "power2.in" }, 6.31);
+  tl.set("#cg3", { visibility: "hidden" }, 6.39);
+  tl.set("#cw4_0", { backgroundColor: "#A80F57" }, 6.44);
+  tl.set("#cw4_0", { backgroundColor: "rgba(168,15,87,0)" }, 6.68);
+  tl.set("#cw4_1", { backgroundColor: "#A80F57" }, 6.68);
+  tl.set("#cw4_1", { backgroundColor: "rgba(168,15,87,0)" }, 7.12);
+  tl.set("#cw4_2", { backgroundColor: "#A80F57" }, 7.12);
+  tl.set("#cw4_2", { backgroundColor: "rgba(168,15,87,0)" }, 7.33);
+  tl.set("#cw4_3", { backgroundColor: "#A80F57" }, 7.33);
+  tl.set("#cw4_3", { backgroundColor: "rgba(168,15,87,0)" }, 7.73);
+  tl.fromTo("#cg4", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 6.39);
+  tl.to("#cg4", { opacity: 0, duration: 0.08, ease: "power2.in" }, 7.65);
+  tl.set("#cg4", { visibility: "hidden" }, 7.73);
+  tl.set("#cw5_0", { backgroundColor: "#A80F57" }, 7.78);
+  tl.set("#cw5_0", { backgroundColor: "rgba(168,15,87,0)" }, 7.85);
+  tl.set("#cw5_1", { backgroundColor: "#A80F57" }, 7.85);
+  tl.set("#cw5_1", { backgroundColor: "rgba(168,15,87,0)" }, 8.06);
+  tl.set("#cw5_2", { backgroundColor: "#A80F57" }, 8.06);
+  tl.set("#cw5_2", { backgroundColor: "rgba(168,15,87,0)" }, 8.25);
+  tl.fromTo("#cg5", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 7.73);
+  tl.to("#cg5", { opacity: 0, duration: 0.08, ease: "power2.in" }, 8.17);
+  tl.set("#cg5", { visibility: "hidden" }, 8.25);
+  tl.set("#cw6_0", { backgroundColor: "#A80F57" }, 8.30);
+  tl.set("#cw6_0", { backgroundColor: "rgba(168,15,87,0)" }, 8.90);
+  tl.set("#cw6_1", { backgroundColor: "#A80F57" }, 8.90);
+  tl.set("#cw6_1", { backgroundColor: "rgba(168,15,87,0)" }, 9.04);
+  tl.set("#cw6_2", { backgroundColor: "#A80F57" }, 9.04);
+  tl.set("#cw6_2", { backgroundColor: "rgba(168,15,87,0)" }, 9.68);
+  tl.fromTo("#cg6", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 8.25);
+  tl.to("#cg6", { opacity: 0, duration: 0.08, ease: "power2.in" }, 9.60);
+  tl.set("#cg6", { visibility: "hidden" }, 9.68);
+  tl.set("#cw7_0", { backgroundColor: "#A80F57" }, 9.73);
+  tl.set("#cw7_0", { backgroundColor: "rgba(168,15,87,0)" }, 10.13);
+  tl.set("#cw7_1", { backgroundColor: "#A80F57" }, 10.13);
+  tl.set("#cw7_1", { backgroundColor: "rgba(168,15,87,0)" }, 10.62);
+  tl.fromTo("#cg7", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 9.68);
+  tl.to("#cg7", { opacity: 0, duration: 0.08, ease: "power2.in" }, 10.54);
+  tl.set("#cg7", { visibility: "hidden" }, 10.62);
+  tl.set("#cw8_0", { backgroundColor: "#A80F57" }, 10.67);
+  tl.set("#cw8_0", { backgroundColor: "rgba(168,15,87,0)" }, 10.79);
+  tl.set("#cw8_1", { backgroundColor: "#A80F57" }, 10.79);
+  tl.set("#cw8_1", { backgroundColor: "rgba(168,15,87,0)" }, 11.19);
+  tl.set("#cw8_2", { backgroundColor: "#A80F57" }, 11.19);
+  tl.set("#cw8_2", { backgroundColor: "rgba(168,15,87,0)" }, 11.40);
+  tl.fromTo("#cg8", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 10.62);
+  tl.to("#cg8", { opacity: 0, duration: 0.08, ease: "power2.in" }, 11.32);
+  tl.set("#cg8", { visibility: "hidden" }, 11.40);
+  tl.set("#cw9_0", { backgroundColor: "#A80F57" }, 11.45);
+  tl.set("#cw9_0", { backgroundColor: "rgba(168,15,87,0)" }, 11.85);
+  tl.set("#cw9_1", { backgroundColor: "#A80F57" }, 11.85);
+  tl.set("#cw9_1", { backgroundColor: "rgba(168,15,87,0)" }, 12.63);
+  tl.fromTo("#cg9", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 11.4);
+  tl.to("#cg9", { opacity: 0, duration: 0.08, ease: "power2.in" }, 12.55);
+  tl.set("#cg9", { visibility: "hidden" }, 12.63);
+  tl.set("#cw10_0", { backgroundColor: "#A80F57" }, 12.68);
+  tl.set("#cw10_0", { backgroundColor: "rgba(168,15,87,0)" }, 12.92);
+  tl.set("#cw10_1", { backgroundColor: "#A80F57" }, 12.92);
+  tl.set("#cw10_1", { backgroundColor: "rgba(168,15,87,0)" }, 13.15);
+  tl.set("#cw10_2", { backgroundColor: "#A80F57" }, 13.15);
+  tl.set("#cw10_2", { backgroundColor: "rgba(168,15,87,0)" }, 13.61);
+  tl.fromTo("#cg10", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 12.63);
+  tl.to("#cg10", { opacity: 0, duration: 0.08, ease: "power2.in" }, 13.53);
+  tl.set("#cg10", { visibility: "hidden" }, 13.61);
+  tl.set("#cw11_0", { backgroundColor: "#A80F57" }, 13.66);
+  tl.set("#cw11_0", { backgroundColor: "rgba(168,15,87,0)" }, 13.89);
+  tl.set("#cw11_1", { backgroundColor: "#A80F57" }, 13.89);
+  tl.set("#cw11_1", { backgroundColor: "rgba(168,15,87,0)" }, 14.87);
+  tl.fromTo("#cg11", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 13.61);
+  tl.to("#cg11", { opacity: 0, duration: 0.08, ease: "power2.in" }, 14.79);
+  tl.set("#cg11", { visibility: "hidden" }, 14.87);
+  tl.set("#cw12_0", { backgroundColor: "#A80F57" }, 14.92);
+  tl.set("#cw12_0", { backgroundColor: "rgba(168,15,87,0)" }, 15.22);
+  tl.set("#cw12_1", { backgroundColor: "#A80F57" }, 15.22);
+  tl.set("#cw12_1", { backgroundColor: "rgba(168,15,87,0)" }, 15.43);
+  tl.set("#cw12_2", { backgroundColor: "#A80F57" }, 15.43);
+  tl.set("#cw12_2", { backgroundColor: "rgba(168,15,87,0)" }, 16.08);
+  tl.set("#cw12_3", { backgroundColor: "#A80F57" }, 16.08);
+  tl.set("#cw12_3", { backgroundColor: "rgba(168,15,87,0)" }, 16.45);
+  tl.fromTo("#cg12", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 14.87);
+  tl.to("#cg12", { opacity: 0, duration: 0.08, ease: "power2.in" }, 16.37);
+  tl.set("#cg12", { visibility: "hidden" }, 16.45);
+  tl.set("#cw13_0", { backgroundColor: "#A80F57" }, 16.50);
+  tl.set("#cw13_0", { backgroundColor: "rgba(168,15,87,0)" }, 17.10);
+  tl.set("#cw13_1", { backgroundColor: "#A80F57" }, 17.10);
+  tl.set("#cw13_1", { backgroundColor: "rgba(168,15,87,0)" }, 17.17);
+  tl.fromTo("#cg13", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 16.45);
+  tl.to("#cg13", { opacity: 0, duration: 0.08, ease: "power2.in" }, 17.09);
+  tl.set("#cg13", { visibility: "hidden" }, 17.17);
+  tl.set("#cw14_0", { backgroundColor: "#A80F57" }, 17.22);
+  tl.set("#cw14_0", { backgroundColor: "rgba(168,15,87,0)" }, 17.34);
+  tl.set("#cw14_1", { backgroundColor: "#A80F57" }, 17.34);
+  tl.set("#cw14_1", { backgroundColor: "rgba(168,15,87,0)" }, 17.70);
+  tl.fromTo("#cg14", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 17.17);
+  tl.to("#cg14", { opacity: 0, duration: 0.08, ease: "power2.in" }, 17.62);
+  tl.set("#cg14", { visibility: "hidden" }, 17.70);
+  window.__timelines["captions"] = tl;
+  </script>
+</template>

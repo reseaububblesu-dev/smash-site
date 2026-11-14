@@ -1,0 +1,51 @@
+<html data-composition-variables='[
+  {"id":"hook1","type":"string","label":"Accroche ligne 1","default":"POURQUOI"},
+  {"id":"hook2","type":"string","label":"Accroche ligne 2","default":"TOUT LE MONDE"},
+  {"id":"hook3","type":"string","label":"Accroche ligne 3","default":"FAIT LA QUEUE"},
+  {"id":"hook4","type":"string","label":"Accroche ligne 4","default":"ICI ?"}
+]'>
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; background: #F82D8C; }
+    #hook-photo {
+      position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+      object-fit: cover; object-position: 55% 50%;
+      transform-origin: 52% 72%;
+    }
+    #hook-lines { position: absolute; left: 0; top: 300px; width: 1080px; }
+    .hook-line {
+      display: block; width: fit-content; margin-bottom: 14px;
+      transform-origin: 0% 50%;
+    }
+    .hook-line span {
+      display: block; padding: 6px 36px 10px 120px;
+      background: #F82D8C; color: #fff;
+      font-family: "Archivo Black", sans-serif; font-size: 76px; line-height: 1.02;
+      letter-spacing: -0.01em; transform: skewX(-8deg); transform-origin: 0 100%;
+      box-shadow: 0 10px 0 rgba(0,0,0,0.18);
+    }
+    #hook-l4 span { background: #fff; color: #F82D8C; }
+  </style>
+  <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-layout-allow-overflow>
+    <img id="hook-photo" src="assets/img/file-attente.jpg" alt="La file devant Smash" />
+    <div id="hook-lines" data-layout-allow-safe-zone>
+      <div class="hook-line" id="hook-l1"><span data-var-text="hook1">POURQUOI</span></div>
+      <div class="hook-line" id="hook-l2"><span data-var-text="hook2">TOUT LE MONDE</span></div>
+      <div class="hook-line" id="hook-l3"><span data-var-text="hook3">FAIT LA QUEUE</span></div>
+      <div class="hook-line" id="hook-l4"><span data-var-text="hook4">ICI ?</span></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Slow push toward the door and the queue.
+    tl.fromTo("#hook-photo", { scale: 1 }, { scale: 1.08, duration: 2.3, ease: "sine.inOut" }, 0);
+    // Every line is on screen at frame 0 (thumbnail); each punches when the voice says it.
+    const hits = [["#hook-l1", 0.24], ["#hook-l2", 0.48], ["#hook-l3", 1.14], ["#hook-l4", 1.8]];
+    hits.forEach(([sel, t]) => {
+      tl.fromTo(sel, { scale: 1 }, { scale: 1.1, duration: 0.07, ease: "power2.out" }, t);
+      tl.to(sel, { scale: 1, duration: 0.2, ease: "back.out(2)" }, t + 0.07);
+    });
+    window.__timelines["hook"] = tl;
+  </script>
+</template>
+</html>
