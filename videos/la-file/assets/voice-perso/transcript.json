@@ -1,0 +1,350 @@
+[
+  {
+    "text": "Pourquoi",
+    "start": 0.02,
+    "end": 0.33,
+    "id": "w0"
+  },
+  {
+    "text": "tout",
+    "start": 1.01,
+    "end": 1.02,
+    "id": "w1"
+  },
+  {
+    "text": "le",
+    "start": 1.08,
+    "end": 1.16,
+    "id": "w2"
+  },
+  {
+    "text": "monde",
+    "start": 1.27,
+    "end": 1.61,
+    "id": "w3"
+  },
+  {
+    "text": "fait",
+    "start": 1.61,
+    "end": 1.95,
+    "id": "w4"
+  },
+  {
+    "text": "de",
+    "start": 1.95,
+    "end": 2.01,
+    "id": "w5"
+  },
+  {
+    "text": "la",
+    "start": 2.12,
+    "end": 2.28,
+    "id": "w6"
+  },
+  {
+    "text": "queue",
+    "start": 2.34,
+    "end": 2.51,
+    "id": "w7"
+  },
+  {
+    "text": "ici?",
+    "start": 2.71,
+    "end": 3,
+    "id": "w8"
+  },
+  {
+    "text": "Des",
+    "start": 3.02,
+    "end": 3.2,
+    "id": "w9"
+  },
+  {
+    "text": "smash",
+    "start": 3.2,
+    "end": 3.68,
+    "id": "w10"
+  },
+  {
+    "text": "burger",
+    "start": 4.08,
+    "end": 4.18,
+    "id": "w11"
+  },
+  {
+    "text": "de",
+    "start": 4.27,
+    "end": 4.36,
+    "id": "w12"
+  },
+  {
+    "text": "qualité,",
+    "start": 4.46,
+    "end": 5.17,
+    "id": "w13"
+  },
+  {
+    "text": "écrasé",
+    "start": 5.17,
+    "end": 5.68,
+    "id": "w14"
+  },
+  {
+    "text": "à",
+    "start": 5.68,
+    "end": 5.76,
+    "id": "w15"
+  },
+  {
+    "text": "la",
+    "start": 5.76,
+    "end": 5.93,
+    "id": "w16"
+  },
+  {
+    "text": "minute",
+    "start": 6.11,
+    "end": 6.5,
+    "id": "w17"
+  },
+  {
+    "text": "sur",
+    "start": 6.5,
+    "end": 6.6,
+    "id": "w18"
+  },
+  {
+    "text": "la",
+    "start": 6.6,
+    "end": 6.66,
+    "id": "w19"
+  },
+  {
+    "text": "plancha.",
+    "start": 6.66,
+    "end": 7,
+    "id": "w20"
+  },
+  {
+    "text": "Un",
+    "start": 7.02,
+    "end": 7.2,
+    "id": "w21"
+  },
+  {
+    "text": "fromage",
+    "start": 7.2,
+    "end": 7.94,
+    "id": "w22"
+  },
+  {
+    "text": "qui",
+    "start": 8.08,
+    "end": 8.25,
+    "id": "w23"
+  },
+  {
+    "text": "coule,",
+    "start": 8.27,
+    "end": 9,
+    "id": "w24"
+  },
+  {
+    "text": "des",
+    "start": 9,
+    "end": 9.23,
+    "id": "w25"
+  },
+  {
+    "text": "frites",
+    "start": 9.23,
+    "end": 9.51,
+    "id": "w26"
+  },
+  {
+    "text": "maison",
+    "start": 10.1,
+    "end": 10.14,
+    "id": "w27"
+  },
+  {
+    "text": "qui",
+    "start": 10.14,
+    "end": 10.29,
+    "id": "w28"
+  },
+  {
+    "text": "vont",
+    "start": 10.44,
+    "end": 10.67,
+    "id": "w29"
+  },
+  {
+    "text": "avec.",
+    "start": 10.67,
+    "end": 11,
+    "id": "w30"
+  },
+  {
+    "text": "Le",
+    "start": 11.02,
+    "end": 11.11,
+    "id": "w31"
+  },
+  {
+    "text": "poulet",
+    "start": 11.16,
+    "end": 11.79,
+    "id": "w32"
+  },
+  {
+    "text": "frit,",
+    "start": 11.93,
+    "end": 12.36,
+    "id": "w33"
+  },
+  {
+    "text": "bien",
+    "start": 12.46,
+    "end": 12.72,
+    "id": "w34"
+  },
+  {
+    "text": "croustillant.",
+    "start": 12.84,
+    "end": 14,
+    "id": "w35"
+  },
+  {
+    "text": "Et",
+    "start": 14.02,
+    "end": 14.11,
+    "id": "w36"
+  },
+  {
+    "text": "pour",
+    "start": 14.16,
+    "end": 14.28,
+    "id": "w37"
+  },
+  {
+    "text": "finir,",
+    "start": 14.44,
+    "end": 15,
+    "id": "w38"
+  },
+  {
+    "text": "des",
+    "start": 15.08,
+    "end": 15.16,
+    "id": "w39"
+  },
+  {
+    "text": "milkshakes,",
+    "start": 15.27,
+    "end": 15.98,
+    "id": "w40"
+  },
+  {
+    "text": "des",
+    "start": 15.98,
+    "end": 16.18,
+    "id": "w41"
+  },
+  {
+    "text": "tiramisous,",
+    "start": 16.18,
+    "end": 16.99,
+    "id": "w42"
+  },
+  {
+    "text": "tout",
+    "start": 17.11,
+    "end": 17.26,
+    "id": "w43"
+  },
+  {
+    "text": "ce",
+    "start": 17.26,
+    "end": 17.29,
+    "id": "w44"
+  },
+  {
+    "text": "qu'il",
+    "start": 17.44,
+    "end": 17.71,
+    "id": "w45"
+  },
+  {
+    "text": "faut.",
+    "start": 17.71,
+    "end": 18,
+    "id": "w46"
+  },
+  {
+    "text": "Smash",
+    "start": 18.02,
+    "end": 18.32,
+    "id": "w47"
+  },
+  {
+    "text": "by",
+    "start": 18.57,
+    "end": 18.81,
+    "id": "w48"
+  },
+  {
+    "text": "Bubblesoup,",
+    "start": 19.07,
+    "end": 20.14,
+    "id": "w49"
+  },
+  {
+    "text": "81",
+    "start": 20.14,
+    "end": 20.51,
+    "id": "w50"
+  },
+  {
+    "text": "Avenue",
+    "start": 20.51,
+    "end": 21.09,
+    "id": "w51"
+  },
+  {
+    "text": "Pasta,",
+    "start": 21.09,
+    "end": 21.52,
+    "id": "w52"
+  },
+  {
+    "text": "Orlila.",
+    "start": 21.52,
+    "end": 22,
+    "id": "w53"
+  },
+  {
+    "text": "Viens",
+    "start": 22.02,
+    "end": 22.46,
+    "id": "w54"
+  },
+  {
+    "text": "passer",
+    "start": 23.01,
+    "end": 23.03,
+    "id": "w55"
+  },
+  {
+    "text": "ta",
+    "start": 23.08,
+    "end": 23.16,
+    "id": "w56"
+  },
+  {
+    "text": "commande.",
+    "start": 23.27,
+    "end": 24,
+    "id": "w57"
+  }
+]

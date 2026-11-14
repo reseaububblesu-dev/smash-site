@@ -2,33 +2,37 @@
 Display words are written by hand (correct spelling) and take their timing
 from the transcript word at the same position."""
 import json, html
-words = json.load(open("assets/transcript.json"))
-words = words if isinstance(words, list) else words["words"]
+OFFSET = 0.1  # the voice starts 0.1 s into the film
+words = json.load(open("assets/voice-perso/mots.json"))
 # (display text, transcript index) per group
 GROUPS = [
-    [("PREMIER", 8), ("INDICE :", 9)],
-    [("DES", 10), ("SMASH", 11), ("BURGERS,", 12)],
-    [("ÉCRASÉS", 13), ("MINUTE", 14)],
-    [("SUR", 15), ("LA", 16), ("PLANCHA.", 17)],
-    [("LE", 18), ("FROMAGE", 19), ("QUI", 20), ("COULE…", 21)],
-    [("ET", 22), ("LES", 23), ("FRITES", 24)],
-    [("QUI", 25), ("VONT", 26), ("AVEC.", 27)],
-    [("DEUXIÈME", 28), ("INDICE :", 29)],
-    [("LE", 30), ("POULET", 31), ("FRIT,", 32)],
-    [("BIEN", 33), ("CROUSTILLANT.", 34)],
-    [("ET", 35), ("POUR", 36), ("FINIR…", 37)],
-    [("LES", 38), ("MILKSHAKES.", 39)],
-    [("SMASH", 40), ("BY", 41), ("BUBBLE", 42), ("SÜ.", 43)],
-    [("AVENUE", 44), ("PASTEUR,", 45)],
-    [("AUX", 46), ("LILAS.", 47)],
+    [("DES", 9), ("SMASH", 10), ("BURGERS", 11)],
+    [("DE", 12), ("QUALITÉ,", 13)],
+    [("ÉCRASÉS", 14), ("À", 15), ("LA", 16), ("MINUTE", 17)],
+    [("SUR", 18), ("LA", 19), ("PLANCHA.", 20)],
+    [("UN", 21), ("FROMAGE", 22), ("QUI", 23), ("COULE,", 24)],
+    [("DES", 25), ("FRITES", 26), ("MAISON", 27)],
+    [("QUI", 28), ("VONT", 29), ("AVEC.", 30)],
+    [("LE", 31), ("POULET", 32), ("FRIT,", 33)],
+    [("BIEN", 34), ("CROUSTILLANT.", 35)],
+    [("ET", 36), ("POUR", 37), ("FINIR,", 38)],
+    [("DES", 39), ("MILKSHAKES,", 40)],
+    [("DES", 41), ("TIRAMISUS,", 42)],
+    [("TOUT", 43), ("CE", 44), ("QU'IL", 45), ("FAUT.", 47)],
+    [("SMASH", 48), ("BY", 49), ("BUBBLE", 50), ("SÜ,", 50.5)],
+    [("81", 51), ("AVENUE", 52), ("PASTEUR,", 53)],
+    [("AUX", 54), ("LILAS.", 55)],
 ]
-FIX = {44: 16.5}  # whisper put "Avenue" too early
-def ws(i): return FIX.get(i, words[i]["start"])
+END = 21.45  # the end card takes over
+def ws(i):
+    if i == 50.5:  # "Bubblesu" is one word for whisper: split it in two
+        w = words[50]; return round((w["start"] + w["end"]) / 2 + OFFSET, 2)
+    return round(words[i]["start"] + OFFSET, 2)
 groups_html, js = [], []
 for g, grp in enumerate(GROUPS):
     start = round(ws(grp[0][1]) - 0.05, 2)
     nxt = GROUPS[g + 1] if g + 1 < len(GROUPS) else None
-    end = round(ws(nxt[0][1]) - 0.05, 2) if nxt else 17.7
+    end = round(ws(nxt[0][1]) - 0.05, 2) if nxt else END
     spans = []
     for j, (txt, i) in enumerate(grp):
         spans.append(f'<span class="cw" id="cw{g}_{j}">{html.escape(txt)}</span>')

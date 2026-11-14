@@ -1,0 +1,314 @@
+[
+  {
+    "text": "Pourquoi",
+    "start": 0.24,
+    "end": 0.48,
+    "id": "w0"
+  },
+  {
+    "text": "tout",
+    "start": 0.48,
+    "end": 0.72,
+    "id": "w1"
+  },
+  {
+    "text": "le",
+    "start": 0.72,
+    "end": 0.84,
+    "id": "w2"
+  },
+  {
+    "text": "monde",
+    "start": 0.84,
+    "end": 1.14,
+    "id": "w3"
+  },
+  {
+    "text": "fait",
+    "start": 1.14,
+    "end": 1.38,
+    "id": "w4"
+  },
+  {
+    "text": "la",
+    "start": 1.38,
+    "end": 1.5,
+    "id": "w5"
+  },
+  {
+    "text": "queue",
+    "start": 1.5,
+    "end": 1.8,
+    "id": "w6"
+  },
+  {
+    "text": "ici?",
+    "start": 1.8,
+    "end": 2.01,
+    "id": "w7"
+  },
+  {
+    "text": "Premier",
+    "start": 2.4,
+    "end": 2.73,
+    "id": "w8"
+  },
+  {
+    "text": "indice,",
+    "start": 2.84,
+    "end": 3.32,
+    "id": "w9"
+  },
+  {
+    "text": "des",
+    "start": 3.32,
+    "end": 3.54,
+    "id": "w10"
+  },
+  {
+    "text": "smash",
+    "start": 3.54,
+    "end": 3.91,
+    "id": "w11"
+  },
+  {
+    "text": "burgers,",
+    "start": 3.91,
+    "end": 4.56,
+    "id": "w12"
+  },
+  {
+    "text": "écrasés",
+    "start": 4.62,
+    "end": 4.98,
+    "id": "w13"
+  },
+  {
+    "text": "minute",
+    "start": 4.98,
+    "end": 5.31,
+    "id": "w14"
+  },
+  {
+    "text": "sur",
+    "start": 5.53,
+    "end": 5.57,
+    "id": "w15"
+  },
+  {
+    "text": "la",
+    "start": 5.59,
+    "end": 5.71,
+    "id": "w16"
+  },
+  {
+    "text": "plancha.",
+    "start": 5.71,
+    "end": 6.44,
+    "id": "w17"
+  },
+  {
+    "text": "Le",
+    "start": 6.44,
+    "end": 6.68,
+    "id": "w18"
+  },
+  {
+    "text": "fromage",
+    "start": 6.68,
+    "end": 7.01,
+    "id": "w19"
+  },
+  {
+    "text": "qui",
+    "start": 7.12,
+    "end": 7.33,
+    "id": "w20"
+  },
+  {
+    "text": "coule",
+    "start": 7.33,
+    "end": 7.68,
+    "id": "w21"
+  },
+  {
+    "text": "et",
+    "start": 7.78,
+    "end": 7.85,
+    "id": "w22"
+  },
+  {
+    "text": "les",
+    "start": 7.85,
+    "end": 8.06,
+    "id": "w23"
+  },
+  {
+    "text": "frites",
+    "start": 8.06,
+    "end": 8.3,
+    "id": "w24"
+  },
+  {
+    "text": "qui",
+    "start": 8.3,
+    "end": 8.9,
+    "id": "w25"
+  },
+  {
+    "text": "vont",
+    "start": 8.9,
+    "end": 9.04,
+    "id": "w26"
+  },
+  {
+    "text": "avec.",
+    "start": 9.04,
+    "end": 9.59,
+    "id": "w27"
+  },
+  {
+    "text": "Deuxième",
+    "start": 9.73,
+    "end": 10.13,
+    "id": "w28"
+  },
+  {
+    "text": "indice,",
+    "start": 10.13,
+    "end": 10.58,
+    "id": "w29"
+  },
+  {
+    "text": "le",
+    "start": 10.67,
+    "end": 10.79,
+    "id": "w30"
+  },
+  {
+    "text": "poulet",
+    "start": 10.79,
+    "end": 11.19,
+    "id": "w31"
+  },
+  {
+    "text": "frit",
+    "start": 11.19,
+    "end": 11.45,
+    "id": "w32"
+  },
+  {
+    "text": "bien",
+    "start": 11.45,
+    "end": 11.46,
+    "id": "w33"
+  },
+  {
+    "text": "croustillant.",
+    "start": 11.85,
+    "end": 12.68,
+    "id": "w34"
+  },
+  {
+    "text": "Et",
+    "start": 12.68,
+    "end": 12.92,
+    "id": "w35"
+  },
+  {
+    "text": "pour",
+    "start": 12.92,
+    "end": 13.07,
+    "id": "w36"
+  },
+  {
+    "text": "finir,",
+    "start": 13.15,
+    "end": 13.65,
+    "id": "w37"
+  },
+  {
+    "text": "les",
+    "start": 13.66,
+    "end": 13.89,
+    "id": "w38"
+  },
+  {
+    "text": "milkshakes.",
+    "start": 13.89,
+    "end": 14.68,
+    "id": "w39"
+  },
+  {
+    "text": "Smash",
+    "start": 14.92,
+    "end": 15.22,
+    "id": "w40"
+  },
+  {
+    "text": "by",
+    "start": 15.22,
+    "end": 15.43,
+    "id": "w41"
+  },
+  {
+    "text": "Bubble",
+    "start": 15.43,
+    "end": 16.08,
+    "id": "w42"
+  },
+  {
+    "text": "Su,",
+    "start": 16.08,
+    "end": 16.44,
+    "id": "w43"
+  },
+  {
+    "text": "Avenue",
+    "start": 16.44,
+    "end": 16.54,
+    "id": "w44"
+  },
+  {
+    "text": "Pasteur",
+    "start": 17.1,
+    "end": 17.22,
+    "id": "w45"
+  },
+  {
+    "text": "au",
+    "start": 17.22,
+    "end": 17.34,
+    "id": "w46"
+  },
+  {
+    "text": "Lila,",
+    "start": 17.34,
+    "end": 17.73,
+    "id": "w47"
+  },
+  {
+    "text": "paste",
+    "start": 17.73,
+    "end": 17.85,
+    "id": "w48"
+  },
+  {
+    "text": "à",
+    "start": 18.05,
+    "end": 18.11,
+    "id": "w49"
+  },
+  {
+    "text": "commande",
+    "start": 18.11,
+    "end": 18.62,
+    "id": "w50"
+  },
+  {
+    "text": "ici.",
+    "start": 18.62,
+    "end": 19.04,
+    "id": "w51"
+  }
+]

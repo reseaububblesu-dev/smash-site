@@ -16,62 +16,62 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="20.6" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24.6" data-width="1080" data-height="1920">
       <div id="ground"></div>
 
-      <!-- 0.0 - 2.3 : l'accroche sur la vraie file d'attente -->
+      <!-- 0.0 - 2.5 : l'accroche sur la vraie file d'attente -->
       <div id="hook" class="scene-host" style="z-index:1" data-composition-id="hook" data-composition-src="compositions/hook.html"
-           data-start="0" data-duration="2.3" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+           data-start="0" data-duration="2.5" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
 
       <!-- Rushes (each wrapper is untimed; only the <video> is timed) -->
       <div class="shot" id="w-plancha">
-        <video id="v-plancha" class="clip" src="assets/footage/plancha.mp4" data-start="2.3" data-duration="2.3" data-media-start="0"
-               data-track-index="2" data-has-audio="true" data-volume="0.6" data-fade-in="0.05" data-fade-out="0.08" playsinline></video>
+        <video id="v-plancha" class="clip" src="assets/footage/plancha.mp4" data-start="2.5" data-duration="2.4" data-media-start="0"
+               data-track-index="2" data-has-audio="true" data-volume="0.45" data-fade-in="0.05" data-fade-out="0.08" playsinline></video>
       </div>
       <div class="shot" id="w-assemblage">
-        <video id="v-assemblage" class="clip" src="assets/footage/assemblage.mp4" data-start="4.6" data-duration="2.0" data-media-start="0.2"
+        <video id="v-assemblage" class="clip" src="assets/footage/assemblage.mp4" data-start="4.9" data-duration="2.05" data-media-start="0.2"
                data-track-index="2" data-has-audio="true" data-volume="0.4" data-fade-in="0.05" data-fade-out="0.08" playsinline></video>
       </div>
       <div class="shot" id="w-box">
-        <video id="v-box" class="clip" src="assets/footage/box.mp4" data-start="6.6" data-duration="1.6" data-media-start="0.2"
+        <video id="v-box" class="clip" src="assets/footage/box.mp4" data-start="8.75" data-duration="2.2" data-media-start="0.1"
                data-track-index="2" muted playsinline></video>
       </div>
       <div class="shot" id="w-closeup">
-        <video id="v-closeup" class="clip" src="assets/footage/closeup.mp4" data-start="8.2" data-duration="1.5" data-media-start="0.2"
+        <video id="v-closeup" class="clip" src="assets/footage/closeup.mp4" data-start="6.95" data-duration="1.8" data-media-start="0.3"
                data-track-index="2" data-has-audio="true" data-volume="0.2" data-fade-in="0.05" data-fade-out="0.08" playsinline></video>
       </div>
       <div class="shot" id="w-chicken">
-        <video id="v-chicken" class="clip" src="assets/footage/chicken.mp4" data-start="9.7" data-duration="3.0" data-media-start="0.1"
+        <video id="v-chicken" class="clip" src="assets/footage/chicken.mp4" data-start="10.95" data-duration="2.75" data-media-start="0.1"
                data-track-index="2" data-has-audio="true" data-volume="0.3" data-fade-in="0.05" data-fade-out="0.08" playsinline></video>
       </div>
 
-      <!-- 12.7 - 14.8 : milkshake -->
+      <!-- 13.7 - 17.95 : milkshake (+ tiramisus) -->
       <div id="milkshake" class="scene-host" style="z-index:1" data-composition-id="milkshake" data-composition-src="compositions/milkshake.html"
-           data-start="12.7" data-duration="2.1" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+           data-start="13.7" data-duration="4.25" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
 
       <div class="shot" id="w-devanture">
-        <video id="v-devanture" class="clip" src="assets/footage/devanture.mp4" data-start="14.8" data-duration="2.9" data-media-start="0.6"
+        <video id="v-devanture" class="clip" src="assets/footage/devanture.mp4" data-start="17.95" data-duration="3.5" data-media-start="0.05"
                data-track-index="2" data-has-audio="true" data-volume="0.4" data-fade-in="0.05" data-fade-out="0.15" playsinline></video>
       </div>
 
-      <!-- 17.7 - 20.6 : carte de fin -->
+      <!-- 21.45 - 24.6 : carte de fin -->
       <div id="endcard" class="scene-host" style="z-index:1" data-composition-id="endcard" data-composition-src="compositions/endcard.html"
-           data-start="17.7" data-duration="2.9" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+           data-start="21.45" data-duration="3.15" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
 
       <!-- Titres produits (indices) et sous-titres -->
       <div id="labels" class="scene-host" style="z-index:5" data-composition-id="labels" data-composition-src="compositions/labels.html"
-           data-start="2.3" data-duration="12.5" data-track-index="3" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+           data-start="2.5" data-duration="15.45" data-track-index="3" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
       <div id="captions" class="scene-host" style="z-index:6" data-composition-id="captions" data-composition-src="compositions/captions.html"
-           data-start="0" data-duration="17.7" data-track-index="4" data-track-kind="captions" data-width="1080" data-height="1920"></div>
+           data-start="0" data-duration="21.45" data-track-index="4" data-track-kind="captions" data-width="1080" data-height="1920"></div>
 
-      <!-- Voix off -->
-      <audio id="vo" class="clip" src="assets/voiceover.wav" data-start="0" data-duration="20.6" data-track-index="5" data-volume="1"></audio>
+      <!-- Voix off : la voix du gérant -->
+      <audio id="vo" class="clip" src="assets/voice-perso/voix.wav" data-start="0.1" data-duration="23.06" data-track-index="5" data-volume="1"></audio>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
       // One hero move per shot: an impact punch-in on the cut, then a slow creep.
-      const shots = [["#w-plancha", 2.3, 2.3], ["#w-assemblage", 4.6, 2.0], ["#w-box", 6.6, 1.6],
-                     ["#w-closeup", 8.2, 1.5], ["#w-chicken", 9.7, 3.0], ["#w-devanture", 14.8, 2.9]];
+      const shots = [["#w-plancha", 2.5, 2.4], ["#w-assemblage", 4.9, 2.05], ["#w-closeup", 6.95, 1.8],
+                     ["#w-box", 8.75, 2.2], ["#w-chicken", 10.95, 2.75], ["#w-devanture", 17.95, 3.5]];
       shots.forEach(([sel, s, d]) => {
         tl.fromTo(sel, { scale: 1.12 }, { scale: 1, duration: 0.3, ease: "power3.out" }, s);
         tl.to(sel, { scale: 1.04, duration: d - 0.3, ease: "none" }, s + 0.3);

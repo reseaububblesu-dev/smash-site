@@ -1,6 +1,6 @@
 <html data-composition-variables='[
-  {"id":"cta","type":"string","label":"Appel à l action","default":"PASSE TA COMMANDE ICI !"},
-  {"id":"address","type":"string","label":"Adresse","default":"AVENUE PASTEUR · LES LILAS"}
+  {"id":"cta","type":"string","label":"Appel à l action","default":"VIENS PASSER TA COMMANDE !"},
+  {"id":"address","type":"string","label":"Adresse","default":"81 AVENUE PASTEUR · LES LILAS"}
 ]'>
 <template>
   <style>
@@ -18,14 +18,14 @@
     #end-cta span, #end-addr span {
       display: inline-block; font-family: "Archivo Black", sans-serif; transform: skewX(-8deg);
     }
-    #end-cta span { display: block; width: fit-content; background: #fff; color: #F82D8C; font-size: 46px; line-height: 1.12; padding: 8px 30px 12px; margin: 0 auto; transform-origin: 50% 100%; }
+    #end-cta span { display: block; width: fit-content; background: #fff; color: #F82D8C; font-size: 42px; line-height: 1.12; padding: 8px 30px 12px; margin: 0 auto; transform-origin: 50% 100%; }
     #end-addr span { color: #fff; font-size: 34px; letter-spacing: 0.02em; }
   </style>
   <div id="root" data-composition-id="endcard" data-width="1080" data-height="1920">
     <div id="end-burger" class="end-feather"><img src="assets/img/burger.png" alt="Smash burger" /></div>
     <div id="end-logo"><img src="assets/img/logo.png" alt="Smash by Bubble Sü" /></div>
-    <div id="end-cta" data-layout-allow-safe-zone><span data-var-text="cta">PASSE TA COMMANDE ICI !</span></div>
-    <div id="end-addr"><span data-var-text="address">AVENUE PASTEUR · LES LILAS</span></div>
+    <div id="end-cta" data-layout-allow-safe-zone><span data-var-text="cta">VIENS PASSER TA COMMANDE !</span></div>
+    <div id="end-addr"><span data-var-text="address">81 AVENUE PASTEUR · LES LILAS</span></div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });

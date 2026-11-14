@@ -1,10 +1,10 @@
 <html data-composition-variables='[
-  {"id":"k1","type":"string","label":"Indice 1 (petit)","default":"INDICE N°1"},
+  {"id":"k1","type":"string","label":"Indice 1 (petit)","default":"RAISON N°1"},
   {"id":"t1","type":"string","label":"Indice 1 (titre)","default":"SMASH BURGERS"},
-  {"id":"k2","type":"string","label":"Indice 2 (petit)","default":"INDICE N°2"},
+  {"id":"k2","type":"string","label":"Indice 2 (petit)","default":"RAISON N°2"},
   {"id":"t2","type":"string","label":"Indice 2 (titre)","default":"POULET FRIT"},
   {"id":"k3","type":"string","label":"Indice 3 (petit)","default":"ET POUR FINIR…"},
-  {"id":"t3","type":"string","label":"Indice 3 (titre)","default":"MILKSHAKES"}
+  {"id":"t3","type":"string","label":"Indice 3 (titre)","default":"MILKSHAKES & TIRAMISUS"}
 ]'>
 <template>
   <style>
@@ -13,6 +13,7 @@
     #lab1 { top: 300px; }
     #lab2 { top: 300px; }
     #lab3 { top: 300px; }
+    #lab3-t span { font-size: 78px; }
     .lab-k, .lab-t { display: block; width: fit-content; margin: 0 auto; text-align: center; }
     .lab-k span, .lab-t span {
       display: block; font-family: "Archivo Black", sans-serif;
@@ -24,31 +25,31 @@
     }
     .lab-t { max-width: 720px; margin-top: 10px; transform-origin: 50% 50%; }
     .lab-t span {
-      background: #F82D8C; color: #fff; font-size: 104px; line-height: 0.98;
+      background: #F82D8C; color: #fff; font-size: 96px; line-height: 0.98;
       padding: 8px 34px 16px; letter-spacing: -0.015em;
       box-shadow: 0 12px 0 rgba(0,0,0,0.2);
     }
   </style>
   <div id="root" data-composition-id="labels" data-width="1080" data-height="1920" data-layout-allow-overflow>
-    <!-- Times are local to this scene, which starts at 2.3 s in the film. -->
-    <div class="lab clip" id="lab1" data-start="0" data-duration="4.3" data-track-index="1">
-      <div class="lab-k" id="lab1-k"><span data-var-text="k1">INDICE N°1</span></div>
+    <!-- Times are local to this scene, which starts at 2.5 s in the film. -->
+    <div class="lab clip" id="lab1" data-start="0" data-duration="4.45" data-track-index="1">
+      <div class="lab-k" id="lab1-k"><span data-var-text="k1">RAISON N°1</span></div>
       <div class="lab-t" id="lab1-t"><span data-var-text="t1">SMASH BURGERS</span></div>
     </div>
-    <div class="lab clip" id="lab2" data-start="7.4" data-duration="3.0" data-track-index="1">
-      <div class="lab-k" id="lab2-k"><span data-var-text="k2">INDICE N°2</span></div>
+    <div class="lab clip" id="lab2" data-start="8.45" data-duration="2.75" data-track-index="1">
+      <div class="lab-k" id="lab2-k"><span data-var-text="k2">RAISON N°2</span></div>
       <div class="lab-t" id="lab2-t"><span data-var-text="t2">POULET FRIT</span></div>
     </div>
-    <div class="lab clip" id="lab3" data-start="10.4" data-duration="2.1" data-track-index="1">
+    <div class="lab clip" id="lab3" data-start="11.2" data-duration="4.25" data-track-index="1">
       <div class="lab-k" id="lab3-k"><span data-var-text="k3">ET POUR FINIR…</span></div>
-      <div class="lab-t" id="lab3-t"><span data-var-text="t3">MILKSHAKES</span></div>
+      <div class="lab-t" id="lab3-t"><span data-var-text="t3">MILKSHAKES & TIRAMISUS</span></div>
     </div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
     // [id, start, end] in scene time. Label 1 is fully on screen from its first frame:
     // it hides the logo burned into the plancha rush.
-    [["lab1", 0, 4.3], ["lab2", 7.4, 10.4], ["lab3", 10.4, 12.5]].forEach(([id, s, e], i) => {
+    [["lab1", 0, 4.45], ["lab2", 8.45, 11.2], ["lab3", 11.2, 15.45]].forEach(([id, s, e], i) => {
       const k = `#${id}-k`, t = `#${id}-t`;
       if (i === 0) {
         tl.fromTo(t, { scale: 1.25 }, { scale: 1, duration: 0.27, ease: "back.out(1.6)" }, s);
