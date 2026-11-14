@@ -1,0 +1,37 @@
+<html data-composition-variables='[
+  {"id":"rue","type":"string","label":"Adresse","default":"81 avenue Pasteur"},
+  {"id":"ville","type":"string","label":"Ville","default":"LES LILAS"}
+]'>
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; background: #111; }
+    #fin-photo { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; transform-origin: 50% 60%; }
+    #fin-dim { position: absolute; inset: 0; background: rgba(12,4,8,0.62); }
+    #fin-logo { position: absolute; left: 225px; top: 520px; width: 630px; height: 276px; }
+    #fin-logo img { width: 100%; height: 100%; display: block; }
+    #fin-rule { position: absolute; left: 508px; top: 846px; width: 64px; height: 6px; background: #FF5CAA; transform-origin: 50% 50%; }
+    #fin-rue, #fin-ville { position: absolute; left: 140px; width: 800px; text-align: center; color: #fff; font-family: "Inter", sans-serif; }
+    #fin-rue { top: 884px; overflow: hidden; padding-bottom: 6px; }
+    #fin-rue span { display: inline-block; font-weight: 900; font-size: 64px; letter-spacing: -0.04em; line-height: 1.05; }
+    #fin-ville { top: 972px; font-weight: 700; font-size: 30px; letter-spacing: 0.34em; }
+  </style>
+  <div id="root" data-composition-id="fin" data-width="1080" data-height="1920">
+    <img id="fin-photo" src="assets/img/final.jpg" alt="Le burger nappé de fromage" />
+    <div id="fin-dim"></div>
+    <div id="fin-logo"><img src="assets/img/logo.png" alt="Smash by Bubble Sü" /></div>
+    <div id="fin-rule"></div>
+    <div id="fin-rue"><span data-var-text="rue">81 avenue Pasteur</span></div>
+    <div id="fin-ville" data-var-text="ville">LES LILAS</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#fin-photo", { scale: 1.08 }, { scale: 1.16, duration: 3.22, ease: "none" }, 0);
+    tl.fromTo("#fin-dim", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, 0);
+    tl.fromTo("#fin-logo", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power4.out" }, 0.1);
+    tl.fromTo("#fin-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.out" }, 0.4);
+    tl.fromTo("#fin-rue span", { yPercent: 105 }, { yPercent: 0, duration: 0.45, ease: "power4.out" }, 0.45);
+    tl.fromTo("#fin-ville", { opacity: 0 }, { opacity: 0.9, duration: 0.4, ease: "power2.out" }, 0.75);
+    window.__timelines["fin"] = tl;
+  </script>
+</template>
+</html>

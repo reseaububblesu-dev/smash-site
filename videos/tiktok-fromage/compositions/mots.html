@@ -1,0 +1,43 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    #mots-scrim {
+      position: absolute; left: 0; top: 0; width: 1080px; height: 900px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0) 100%);
+    }
+    #mots-kicker {
+      position: absolute; left: 0; top: 330px; width: 1080px; text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 28px; letter-spacing: 0.34em; margin-right: -0.34em;
+    }
+    .mot { position: absolute; left: 0; top: 380px; width: 1080px; text-align: center; }
+    .mw {
+      display: inline-block; color: #fff; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 132px; line-height: 1; letter-spacing: -0.05em;
+      text-shadow: 0 6px 30px rgba(0,0,0,0.35);
+    }
+    #w3 .mw { font-size: 82px; }
+    #w0 .mw { font-size: 106px; }
+    .pt { color: #FF5CAA; }
+  </style>
+  <div id="root" data-composition-id="mots" data-width="1080" data-height="1920" data-layout-allow-overflow>
+    <div id="mots-scrim"></div>
+    <div id="mots-kicker" class="clip" data-start="0" data-duration="1.36" data-track-index="2">SMASH · LES LILAS</div>
+    <div class="mot clip" id="w0" data-start="0.0" data-duration="1.36" data-track-index="1"><span class="mw" id="w0-w">ÇA DÉBORDE<span class="pt">.</span></span></div>
+    <div class="mot clip" id="w1" data-start="1.36" data-duration="1.36" data-track-index="1"><span class="mw" id="w1-w">SMASHÉ<span class="pt">.</span></span></div>
+    <div class="mot clip" id="w2" data-start="2.72" data-duration="1.36" data-track-index="1"><span class="mw" id="w2-w">TREMPÉ<span class="pt">.</span></span></div>
+    <div class="mot clip" id="w3" data-start="4.08" data-duration="1.36" data-track-index="1"><span class="mw" id="w3-w">DANS LE FROMAGE<span class="pt">.</span></span></div>
+    <div class="mot clip" id="w4" data-start="5.44" data-duration="1.36" data-track-index="1"><span class="mw" id="w4-w">RE-TREMPÉ<span class="pt">.</span></span></div>
+    <div class="mot clip" id="w5" data-start="6.8" data-duration="2.04" data-track-index="1"><span class="mw" id="w5-w">ENROBÉ<span class="pt">.</span></span></div>
+    <div class="mot clip" id="w6" data-start="8.84" data-duration="2.04" data-track-index="1"><span class="mw" id="w6-w">NAPPÉ<span class="pt">.</span></span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Frame 0 is the thumbnail: the hook word is already there, it only settles.
+    tl.fromTo("#w0-w", { scale: 1.06 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+    [["#w1-w", 1.36], ["#w2-w", 2.72], ["#w3-w", 4.08], ["#w4-w", 5.44], ["#w5-w", 6.8], ["#w6-w", 8.84]].forEach(([sel, t]) => {
+      tl.fromTo(sel, { scale: 1.45, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: "power4.out" }, t);
+    });
+    tl.to("#mots-scrim", { opacity: 0, duration: 0.2 }, 14.08);
+    window.__timelines["mots"] = tl;
+  </script>
+</template>
