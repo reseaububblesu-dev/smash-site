@@ -1,179 +1,88 @@
 <template>
   <style>
     #root { position: absolute; inset: 0; pointer-events: none; }
-    .cg {
-      position: absolute; left: 160px; width: 760px; top: 1040px; text-align: center;
-      opacity: 0; transform-origin: 50% 50%;
+    #cap-scrim {
+      position: absolute; left: 0; top: 860px; width: 1080px; height: 560px; opacity: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.42) 50%, rgba(0,0,0,0) 100%);
     }
-    .cw { padding: 0 6px; border-radius: 4px; background-color: rgba(168,15,87,0); }
-    .cbox {
-      display: inline; background: #F82D8C; color: #fff; padding: 2px 16px 6px;
-      font-family: "Archivo Black", sans-serif; font-size: 56px; line-height: 1.38;
-      box-decoration-break: clone; -webkit-box-decoration-break: clone;
+    .cg { position: absolute; left: 140px; width: 800px; top: 1112px; text-align: center; }
+    .ct {
+      display: inline-block; color: #fff; font-family: "Inter", sans-serif; font-weight: 700;
+      font-size: 58px; line-height: 1.15; letter-spacing: -0.02em; opacity: 0;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.55);
     }
-    .cg { padding: 0; box-sizing: border-box; }
   </style>
   <div id="root" data-composition-id="captions" data-width="1080" data-height="1920" data-layout-allow-overflow>
-      <div class="cg" id="cg0"><span class="cbox"><span class="cw" id="cw0_0">DES</span> <span class="cw" id="cw0_1">SMASH</span> <span class="cw" id="cw0_2">BURGERS</span></span></div>
-      <div class="cg" id="cg1"><span class="cbox"><span class="cw" id="cw1_0">DE</span> <span class="cw" id="cw1_1">QUALITÉ,</span></span></div>
-      <div class="cg" id="cg2"><span class="cbox"><span class="cw" id="cw2_0">ÉCRASÉS</span> <span class="cw" id="cw2_1">À</span> <span class="cw" id="cw2_2">LA</span> <span class="cw" id="cw2_3">MINUTE</span></span></div>
-      <div class="cg" id="cg3"><span class="cbox"><span class="cw" id="cw3_0">SUR</span> <span class="cw" id="cw3_1">LA</span> <span class="cw" id="cw3_2">PLANCHA.</span></span></div>
-      <div class="cg" id="cg4"><span class="cbox"><span class="cw" id="cw4_0">UN</span> <span class="cw" id="cw4_1">FROMAGE</span> <span class="cw" id="cw4_2">QUI</span> <span class="cw" id="cw4_3">COULE,</span></span></div>
-      <div class="cg" id="cg5"><span class="cbox"><span class="cw" id="cw5_0">DES</span> <span class="cw" id="cw5_1">FRITES</span> <span class="cw" id="cw5_2">MAISON</span></span></div>
-      <div class="cg" id="cg6"><span class="cbox"><span class="cw" id="cw6_0">QUI</span> <span class="cw" id="cw6_1">VONT</span> <span class="cw" id="cw6_2">AVEC.</span></span></div>
-      <div class="cg" id="cg7"><span class="cbox"><span class="cw" id="cw7_0">LE</span> <span class="cw" id="cw7_1">POULET</span> <span class="cw" id="cw7_2">FRIT,</span></span></div>
-      <div class="cg" id="cg8"><span class="cbox"><span class="cw" id="cw8_0">BIEN</span> <span class="cw" id="cw8_1">CROUSTILLANT.</span></span></div>
-      <div class="cg" id="cg9"><span class="cbox"><span class="cw" id="cw9_0">ET</span> <span class="cw" id="cw9_1">POUR</span> <span class="cw" id="cw9_2">FINIR,</span></span></div>
-      <div class="cg" id="cg10"><span class="cbox"><span class="cw" id="cw10_0">DES</span> <span class="cw" id="cw10_1">MILKSHAKES,</span></span></div>
-      <div class="cg" id="cg11"><span class="cbox"><span class="cw" id="cw11_0">DES</span> <span class="cw" id="cw11_1">TIRAMISUS,</span></span></div>
-      <div class="cg" id="cg12"><span class="cbox"><span class="cw" id="cw12_0">TOUT</span> <span class="cw" id="cw12_1">CE</span> <span class="cw" id="cw12_2">QU&#x27;IL</span> <span class="cw" id="cw12_3">FAUT.</span></span></div>
-      <div class="cg" id="cg13"><span class="cbox"><span class="cw" id="cw13_0">SMASH</span> <span class="cw" id="cw13_1">BY</span> <span class="cw" id="cw13_2">BUBBLE</span> <span class="cw" id="cw13_3">SÜ,</span></span></div>
-      <div class="cg" id="cg14"><span class="cbox"><span class="cw" id="cw14_0">81</span> <span class="cw" id="cw14_1">AVENUE</span> <span class="cw" id="cw14_2">PASTEUR,</span></span></div>
-      <div class="cg" id="cg15"><span class="cbox"><span class="cw" id="cw15_0">AUX</span> <span class="cw" id="cw15_1">LILAS.</span></span></div>
+    <div id="cap-scrim"></div>
+    <div class="cg" id="cg0"><span class="ct">Des smash burgers</span></div>
+    <div class="cg" id="cg1"><span class="ct">de qualité</span></div>
+    <div class="cg" id="cg2"><span class="ct">écrasés à la minute</span></div>
+    <div class="cg" id="cg3"><span class="ct">sur la plancha</span></div>
+    <div class="cg" id="cg4"><span class="ct">Un fromage qui coule</span></div>
+    <div class="cg" id="cg5"><span class="ct">des frites maison</span></div>
+    <div class="cg" id="cg6"><span class="ct">qui vont avec</span></div>
+    <div class="cg" id="cg7"><span class="ct">Le poulet frit</span></div>
+    <div class="cg" id="cg8"><span class="ct">bien croustillant</span></div>
+    <div class="cg" id="cg9"><span class="ct">Et pour finir</span></div>
+    <div class="cg" id="cg10"><span class="ct">des milkshakes</span></div>
+    <div class="cg" id="cg11"><span class="ct">des tiramisus</span></div>
+    <div class="cg" id="cg12"><span class="ct">tout ce qu&#x27;il faut</span></div>
+    <div class="cg" id="cg13"><span class="ct">Smash by Bubble Sü</span></div>
+    <div class="cg" id="cg14"><span class="ct">81 avenue Pasteur</span></div>
+    <div class="cg" id="cg15"><span class="ct">aux Lilas</span></div>
   </div>
   <script>
   const tl = gsap.timeline({ paused: true });
-  tl.set("#cw0_0", { backgroundColor: "#A80F57" }, 2.58);
-  tl.set("#cw0_0", { backgroundColor: "rgba(168,15,87,0)" }, 2.72);
-  tl.set("#cw0_1", { backgroundColor: "#A80F57" }, 2.72);
-  tl.set("#cw0_1", { backgroundColor: "rgba(168,15,87,0)" }, 3.06);
-  tl.set("#cw0_2", { backgroundColor: "#A80F57" }, 3.06);
-  tl.set("#cw0_2", { backgroundColor: "rgba(168,15,87,0)" }, 3.51);
-  tl.fromTo("#cg0", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 2.53);
-  tl.to("#cg0", { opacity: 0, duration: 0.08, ease: "power2.in" }, 3.43);
-  tl.set("#cg0", { visibility: "hidden" }, 3.51);
-  tl.set("#cw1_0", { backgroundColor: "#A80F57" }, 3.56);
-  tl.set("#cw1_0", { backgroundColor: "rgba(168,15,87,0)" }, 3.96);
-  tl.set("#cw1_1", { backgroundColor: "#A80F57" }, 3.96);
-  tl.set("#cw1_1", { backgroundColor: "rgba(168,15,87,0)" }, 4.95);
-  tl.fromTo("#cg1", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 3.51);
-  tl.to("#cg1", { opacity: 0, duration: 0.08, ease: "power2.in" }, 4.87);
-  tl.set("#cg1", { visibility: "hidden" }, 4.95);
-  tl.set("#cw2_0", { backgroundColor: "#A80F57" }, 5.00);
-  tl.set("#cw2_0", { backgroundColor: "rgba(168,15,87,0)" }, 5.26);
-  tl.set("#cw2_1", { backgroundColor: "#A80F57" }, 5.26);
-  tl.set("#cw2_1", { backgroundColor: "rgba(168,15,87,0)" }, 5.38);
-  tl.set("#cw2_2", { backgroundColor: "#A80F57" }, 5.38);
-  tl.set("#cw2_2", { backgroundColor: "rgba(168,15,87,0)" }, 5.58);
-  tl.set("#cw2_3", { backgroundColor: "#A80F57" }, 5.58);
-  tl.set("#cw2_3", { backgroundColor: "rgba(168,15,87,0)" }, 5.67);
-  tl.fromTo("#cg2", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 4.95);
-  tl.to("#cg2", { opacity: 0, duration: 0.08, ease: "power2.in" }, 5.59);
-  tl.set("#cg2", { visibility: "hidden" }, 5.67);
-  tl.set("#cw3_0", { backgroundColor: "#A80F57" }, 5.72);
-  tl.set("#cw3_0", { backgroundColor: "rgba(168,15,87,0)" }, 5.94);
-  tl.set("#cw3_1", { backgroundColor: "#A80F57" }, 5.94);
-  tl.set("#cw3_1", { backgroundColor: "rgba(168,15,87,0)" }, 6.14);
-  tl.set("#cw3_2", { backgroundColor: "#A80F57" }, 6.14);
-  tl.set("#cw3_2", { backgroundColor: "rgba(168,15,87,0)" }, 7.31);
-  tl.fromTo("#cg3", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 5.67);
-  tl.to("#cg3", { opacity: 0, duration: 0.08, ease: "power2.in" }, 7.23);
-  tl.set("#cg3", { visibility: "hidden" }, 7.31);
-  tl.set("#cw4_0", { backgroundColor: "#A80F57" }, 7.36);
-  tl.set("#cw4_0", { backgroundColor: "rgba(168,15,87,0)" }, 7.64);
-  tl.set("#cw4_1", { backgroundColor: "#A80F57" }, 7.64);
-  tl.set("#cw4_1", { backgroundColor: "rgba(168,15,87,0)" }, 8.06);
-  tl.set("#cw4_2", { backgroundColor: "#A80F57" }, 8.06);
-  tl.set("#cw4_2", { backgroundColor: "rgba(168,15,87,0)" }, 8.38);
-  tl.set("#cw4_3", { backgroundColor: "#A80F57" }, 8.38);
-  tl.set("#cw4_3", { backgroundColor: "rgba(168,15,87,0)" }, 8.93);
-  tl.fromTo("#cg4", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 7.31);
-  tl.to("#cg4", { opacity: 0, duration: 0.08, ease: "power2.in" }, 8.85);
-  tl.set("#cg4", { visibility: "hidden" }, 8.93);
-  tl.set("#cw5_0", { backgroundColor: "#A80F57" }, 8.98);
-  tl.set("#cw5_0", { backgroundColor: "rgba(168,15,87,0)" }, 9.12);
-  tl.set("#cw5_1", { backgroundColor: "#A80F57" }, 9.12);
-  tl.set("#cw5_1", { backgroundColor: "rgba(168,15,87,0)" }, 9.46);
-  tl.set("#cw5_2", { backgroundColor: "#A80F57" }, 9.46);
-  tl.set("#cw5_2", { backgroundColor: "rgba(168,15,87,0)" }, 9.67);
-  tl.fromTo("#cg5", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 8.93);
-  tl.to("#cg5", { opacity: 0, duration: 0.08, ease: "power2.in" }, 9.59);
-  tl.set("#cg5", { visibility: "hidden" }, 9.67);
-  tl.set("#cw6_0", { backgroundColor: "#A80F57" }, 9.72);
-  tl.set("#cw6_0", { backgroundColor: "rgba(168,15,87,0)" }, 9.94);
-  tl.set("#cw6_1", { backgroundColor: "#A80F57" }, 9.94);
-  tl.set("#cw6_1", { backgroundColor: "rgba(168,15,87,0)" }, 10.10);
-  tl.set("#cw6_2", { backgroundColor: "#A80F57" }, 10.10);
-  tl.set("#cw6_2", { backgroundColor: "rgba(168,15,87,0)" }, 11.03);
-  tl.fromTo("#cg6", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 9.67);
-  tl.to("#cg6", { opacity: 0, duration: 0.08, ease: "power2.in" }, 10.95);
-  tl.set("#cg6", { visibility: "hidden" }, 11.03);
-  tl.set("#cw7_0", { backgroundColor: "#A80F57" }, 11.08);
-  tl.set("#cw7_0", { backgroundColor: "rgba(168,15,87,0)" }, 11.24);
-  tl.set("#cw7_1", { backgroundColor: "#A80F57" }, 11.24);
-  tl.set("#cw7_1", { backgroundColor: "rgba(168,15,87,0)" }, 11.54);
-  tl.set("#cw7_2", { backgroundColor: "#A80F57" }, 11.54);
-  tl.set("#cw7_2", { backgroundColor: "rgba(168,15,87,0)" }, 12.25);
-  tl.fromTo("#cg7", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 11.03);
-  tl.to("#cg7", { opacity: 0, duration: 0.08, ease: "power2.in" }, 12.17);
-  tl.set("#cg7", { visibility: "hidden" }, 12.25);
-  tl.set("#cw8_0", { backgroundColor: "#A80F57" }, 12.30);
-  tl.set("#cw8_0", { backgroundColor: "rgba(168,15,87,0)" }, 12.64);
-  tl.set("#cw8_1", { backgroundColor: "#A80F57" }, 12.64);
-  tl.set("#cw8_1", { backgroundColor: "rgba(168,15,87,0)" }, 13.75);
-  tl.fromTo("#cg8", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 12.25);
-  tl.to("#cg8", { opacity: 0, duration: 0.08, ease: "power2.in" }, 13.67);
-  tl.set("#cg8", { visibility: "hidden" }, 13.75);
-  tl.set("#cw9_0", { backgroundColor: "#A80F57" }, 13.80);
-  tl.set("#cw9_0", { backgroundColor: "rgba(168,15,87,0)" }, 13.92);
-  tl.set("#cw9_1", { backgroundColor: "#A80F57" }, 13.92);
-  tl.set("#cw9_1", { backgroundColor: "rgba(168,15,87,0)" }, 14.04);
-  tl.set("#cw9_2", { backgroundColor: "#A80F57" }, 14.04);
-  tl.set("#cw9_2", { backgroundColor: "rgba(168,15,87,0)" }, 14.87);
-  tl.fromTo("#cg9", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 13.75);
-  tl.to("#cg9", { opacity: 0, duration: 0.08, ease: "power2.in" }, 14.79);
-  tl.set("#cg9", { visibility: "hidden" }, 14.87);
-  tl.set("#cw10_0", { backgroundColor: "#A80F57" }, 14.92);
-  tl.set("#cw10_0", { backgroundColor: "rgba(168,15,87,0)" }, 15.10);
-  tl.set("#cw10_1", { backgroundColor: "#A80F57" }, 15.10);
-  tl.set("#cw10_1", { backgroundColor: "rgba(168,15,87,0)" }, 15.61);
-  tl.fromTo("#cg10", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 14.87);
-  tl.to("#cg10", { opacity: 0, duration: 0.08, ease: "power2.in" }, 15.53);
-  tl.set("#cg10", { visibility: "hidden" }, 15.61);
-  tl.set("#cw11_0", { backgroundColor: "#A80F57" }, 15.66);
-  tl.set("#cw11_0", { backgroundColor: "rgba(168,15,87,0)" }, 15.82);
-  tl.set("#cw11_1", { backgroundColor: "#A80F57" }, 15.82);
-  tl.set("#cw11_1", { backgroundColor: "rgba(168,15,87,0)" }, 16.67);
-  tl.fromTo("#cg11", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 15.61);
-  tl.to("#cg11", { opacity: 0, duration: 0.08, ease: "power2.in" }, 16.59);
-  tl.set("#cg11", { visibility: "hidden" }, 16.67);
-  tl.set("#cw12_0", { backgroundColor: "#A80F57" }, 16.72);
-  tl.set("#cw12_0", { backgroundColor: "rgba(168,15,87,0)" }, 16.82);
-  tl.set("#cw12_1", { backgroundColor: "#A80F57" }, 16.82);
-  tl.set("#cw12_1", { backgroundColor: "rgba(168,15,87,0)" }, 16.98);
-  tl.set("#cw12_2", { backgroundColor: "#A80F57" }, 16.98);
-  tl.set("#cw12_2", { backgroundColor: "rgba(168,15,87,0)" }, 17.70);
-  tl.set("#cw12_3", { backgroundColor: "#A80F57" }, 17.70);
-  tl.set("#cw12_3", { backgroundColor: "rgba(168,15,87,0)" }, 18.07);
-  tl.fromTo("#cg12", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 16.67);
-  tl.to("#cg12", { opacity: 0, duration: 0.08, ease: "power2.in" }, 17.99);
-  tl.set("#cg12", { visibility: "hidden" }, 18.07);
-  tl.set("#cw13_0", { backgroundColor: "#A80F57" }, 18.12);
-  tl.set("#cw13_0", { backgroundColor: "rgba(168,15,87,0)" }, 18.34);
-  tl.set("#cw13_1", { backgroundColor: "#A80F57" }, 18.34);
-  tl.set("#cw13_1", { backgroundColor: "rgba(168,15,87,0)" }, 18.56);
-  tl.set("#cw13_2", { backgroundColor: "#A80F57" }, 18.56);
-  tl.set("#cw13_2", { backgroundColor: "rgba(168,15,87,0)" }, 18.93);
-  tl.set("#cw13_3", { backgroundColor: "#A80F57" }, 18.93);
-  tl.set("#cw13_3", { backgroundColor: "rgba(168,15,87,0)" }, 19.39);
-  tl.fromTo("#cg13", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 18.07);
-  tl.to("#cg13", { opacity: 0, duration: 0.08, ease: "power2.in" }, 19.31);
-  tl.set("#cg13", { visibility: "hidden" }, 19.39);
-  tl.set("#cw14_0", { backgroundColor: "#A80F57" }, 19.44);
-  tl.set("#cw14_0", { backgroundColor: "rgba(168,15,87,0)" }, 19.96);
-  tl.set("#cw14_1", { backgroundColor: "#A80F57" }, 19.96);
-  tl.set("#cw14_1", { backgroundColor: "rgba(168,15,87,0)" }, 20.40);
-  tl.set("#cw14_2", { backgroundColor: "#A80F57" }, 20.40);
-  tl.set("#cw14_2", { backgroundColor: "rgba(168,15,87,0)" }, 20.77);
-  tl.fromTo("#cg14", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 19.39);
-  tl.to("#cg14", { opacity: 0, duration: 0.08, ease: "power2.in" }, 20.69);
-  tl.set("#cg14", { visibility: "hidden" }, 20.77);
-  tl.set("#cw15_0", { backgroundColor: "#A80F57" }, 20.82);
-  tl.set("#cw15_0", { backgroundColor: "rgba(168,15,87,0)" }, 20.92);
-  tl.set("#cw15_1", { backgroundColor: "#A80F57" }, 20.92);
-  tl.set("#cw15_1", { backgroundColor: "rgba(168,15,87,0)" }, 21.45);
-  tl.fromTo("#cg15", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.12, ease: "back.out(2)" }, 20.77);
-  tl.to("#cg15", { opacity: 0, duration: 0.08, ease: "power2.in" }, 21.37);
+  // A soft band behind the captions while they run (from the first caption to the end card).
+  tl.fromTo("#cap-scrim", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 2.38);
+  tl.to("#cap-scrim", { opacity: 0, duration: 0.2 }, 21.25);
+  tl.fromTo("#cg0 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 2.52);
+  tl.to("#cg0 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 3.40);
+  tl.set("#cg0", { visibility: "hidden" }, 3.50);
+  tl.fromTo("#cg1 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 3.5);
+  tl.to("#cg1 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 4.84);
+  tl.set("#cg1", { visibility: "hidden" }, 4.94);
+  tl.fromTo("#cg2 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 4.94);
+  tl.to("#cg2 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 5.56);
+  tl.set("#cg2", { visibility: "hidden" }, 5.66);
+  tl.fromTo("#cg3 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 5.66);
+  tl.to("#cg3 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 7.20);
+  tl.set("#cg3", { visibility: "hidden" }, 7.30);
+  tl.fromTo("#cg4 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 7.3);
+  tl.to("#cg4 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 8.82);
+  tl.set("#cg4", { visibility: "hidden" }, 8.92);
+  tl.fromTo("#cg5 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 8.92);
+  tl.to("#cg5 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 9.56);
+  tl.set("#cg5", { visibility: "hidden" }, 9.66);
+  tl.fromTo("#cg6 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 9.66);
+  tl.to("#cg6 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 10.92);
+  tl.set("#cg6", { visibility: "hidden" }, 11.02);
+  tl.fromTo("#cg7 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 11.02);
+  tl.to("#cg7 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 12.14);
+  tl.set("#cg7", { visibility: "hidden" }, 12.24);
+  tl.fromTo("#cg8 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 12.24);
+  tl.to("#cg8 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 13.64);
+  tl.set("#cg8", { visibility: "hidden" }, 13.74);
+  tl.fromTo("#cg9 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 13.74);
+  tl.to("#cg9 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 14.76);
+  tl.set("#cg9", { visibility: "hidden" }, 14.86);
+  tl.fromTo("#cg10 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 14.86);
+  tl.to("#cg10 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 15.50);
+  tl.set("#cg10", { visibility: "hidden" }, 15.60);
+  tl.fromTo("#cg11 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 15.6);
+  tl.to("#cg11 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 16.56);
+  tl.set("#cg11", { visibility: "hidden" }, 16.66);
+  tl.fromTo("#cg12 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 16.66);
+  tl.to("#cg12 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 17.96);
+  tl.set("#cg12", { visibility: "hidden" }, 18.06);
+  tl.fromTo("#cg13 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 18.06);
+  tl.to("#cg13 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 19.28);
+  tl.set("#cg13", { visibility: "hidden" }, 19.38);
+  tl.fromTo("#cg14 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 19.38);
+  tl.to("#cg14 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 20.66);
+  tl.set("#cg14", { visibility: "hidden" }, 20.76);
+  tl.fromTo("#cg15 .ct", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 20.76);
+  tl.to("#cg15 .ct", { opacity: 0, duration: 0.1, ease: "power2.in" }, 21.35);
   tl.set("#cg15", { visibility: "hidden" }, 21.45);
   window.__timelines["captions"] = tl;
   </script>

@@ -1,5 +1,5 @@
 <html data-composition-variables='[
-  {"id":"cta","type":"string","label":"Appel à l action","default":"VIENS PASSER TA COMMANDE !"},
+  {"id":"cta","type":"string","label":"Appel à l action","default":"Viens passer ta commande"},
   {"id":"address","type":"string","label":"Adresse","default":"81 AVENUE PASTEUR · LES LILAS"}
 ]'>
 <template>
@@ -9,30 +9,29 @@
       -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 78%, transparent 100%);
       mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 78%, transparent 100%);
     }
-    #end-burger { position: absolute; left: 190px; top: 250px; width: 700px; height: 596px; }
+    #end-burger { position: absolute; left: 190px; top: 240px; width: 700px; height: 596px; }
     #end-burger img, #end-logo img { width: 100%; height: 100%; display: block; }
-    #end-logo { position: absolute; left: 210px; top: 820px; width: 660px; height: 289px; }
-    #end-cta, #end-addr { position: absolute; left: 140px; width: 800px; text-align: center; }
-    #end-cta { top: 1100px; }
-    #end-addr { top: 1192px; }
-    #end-cta span, #end-addr span {
-      display: inline-block; font-family: "Archivo Black", sans-serif; transform: skewX(-8deg);
-    }
-    #end-cta span { display: block; width: fit-content; background: #fff; color: #F82D8C; font-size: 42px; line-height: 1.12; padding: 8px 30px 12px; margin: 0 auto; transform-origin: 50% 100%; }
-    #end-addr span { color: #fff; font-size: 34px; letter-spacing: 0.02em; }
+    #end-logo { position: absolute; left: 225px; top: 810px; width: 630px; height: 276px; }
+    #end-rule { position: absolute; left: 508px; top: 1108px; width: 64px; height: 5px; background: #fff; transform-origin: 50% 50%; }
+    #end-cta, #end-addr { position: absolute; left: 140px; width: 800px; text-align: center; color: #fff; font-family: "Inter", sans-serif; }
+    #end-cta { top: 1136px; overflow: hidden; padding-bottom: 4px; }
+    #end-cta span { display: inline-block; font-weight: 900; font-size: 50px; letter-spacing: -0.03em; line-height: 1.05; }
+    #end-addr { top: 1212px; font-weight: 600; font-size: 28px; letter-spacing: 0.22em; text-transform: uppercase; }
   </style>
   <div id="root" data-composition-id="endcard" data-width="1080" data-height="1920">
     <div id="end-burger" class="end-feather"><img src="assets/img/burger.png" alt="Smash burger" /></div>
     <div id="end-logo"><img src="assets/img/logo.png" alt="Smash by Bubble Sü" /></div>
-    <div id="end-cta" data-layout-allow-safe-zone><span data-var-text="cta">VIENS PASSER TA COMMANDE !</span></div>
-    <div id="end-addr"><span data-var-text="address">81 AVENUE PASTEUR · LES LILAS</span></div>
+    <div id="end-rule"></div>
+    <div id="end-cta"><span data-var-text="cta">Viens passer ta commande</span></div>
+    <div id="end-addr" data-var-text="address">81 AVENUE PASTEUR · LES LILAS</div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    tl.fromTo("#end-burger", { yPercent: -70, scale: 1.2 }, { yPercent: 0, scale: 1, duration: 0.35, ease: "power4.out" }, 0);
-    tl.fromTo("#end-logo", { scale: 1.35, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "back.out(1.6)" }, 0.12);
-    tl.fromTo("#end-cta", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "back.out(1.6)" }, 0.3);
-    tl.fromTo("#end-addr", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.75);
+    tl.fromTo("#end-burger", { opacity: 0, y: 60, scale: 1.06 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" }, 0);
+    tl.fromTo("#end-logo", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.18);
+    tl.fromTo("#end-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power3.out" }, 0.35);
+    tl.fromTo("#end-cta span", { yPercent: 105 }, { yPercent: 0, duration: 0.5, ease: "power4.out" }, 0.4);
+    tl.fromTo("#end-addr", { opacity: 0 }, { opacity: 0.9, duration: 0.4, ease: "power2.out" }, 0.75);
     window.__timelines["endcard"] = tl;
   </script>
 </template>

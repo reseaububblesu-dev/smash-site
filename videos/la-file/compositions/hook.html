@@ -1,50 +1,41 @@
-<html data-composition-variables="[
-  {&quot;id&quot;:&quot;hook1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Accroche ligne 1&quot;,&quot;default&quot;:&quot;POURQUOI&quot;},
-  {&quot;id&quot;:&quot;hook2&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Accroche ligne 2&quot;,&quot;default&quot;:&quot;TOUT LE MONDE&quot;},
-  {&quot;id&quot;:&quot;hook3&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Accroche ligne 3&quot;,&quot;default&quot;:&quot;FAIT LA QUEUE&quot;},
-  {&quot;id&quot;:&quot;hook4&quot;,&quot;type&quot;:&quot;string&quot;,&quot;label&quot;:&quot;Accroche ligne 4&quot;,&quot;default&quot;:&quot;ICI ?&quot;}
-]"><head></head><body></body>
+<html data-composition-variables='[
+  {"id":"hookSmall","type":"string","label":"Accroche (petite ligne)","default":"POURQUOI TOUT LE MONDE"},
+  {"id":"hookBig1","type":"string","label":"Accroche ligne 1","default":"FAIT LA QUEUE"},
+  {"id":"hookBig2","type":"string","label":"Accroche ligne 2","default":"ICI ?"}
+]'>
 <template>
   <style>
-    #root { position: absolute; inset: 0; overflow: hidden; background: #F82D8C; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #111; }
     #hook-photo {
       position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
-      object-fit: cover; object-position: 55% 50%;
-      transform-origin: 52% 72%;
+      object-fit: cover; object-position: 55% 50%; transform-origin: 52% 72%;
     }
-    #hook-lines { position: absolute; left: 0; top: 300px; width: 1080px; }
-    .hook-line {
-      display: block; width: fit-content; margin: 0 auto 14px;
-      transform-origin: 50% 50%;
+    #hook-scrim {
+      position: absolute; left: 0; top: 0; width: 1080px; height: 1000px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
     }
-    .hook-line span {
-      display: block; padding: 6px 36px 10px;
-      background: #F82D8C; color: #fff;
-      font-family: "Archivo Black", sans-serif; font-size: 72px; line-height: 1.02;
-      letter-spacing: -0.01em; transform: skewX(-8deg); transform-origin: 0 100%;
-      box-shadow: 0 10px 0 rgba(0,0,0,0.18);
-    }
-    #hook-l4 span { background: #fff; color: #F82D8C; }
+    #hook-text { position: absolute; left: 0; top: 300px; width: 1080px; text-align: center; font-family: "Inter", sans-serif; color: #fff; }
+    #hook-small { font-weight: 700; font-size: 30px; letter-spacing: 0.3em; margin-right: -0.3em; text-transform: uppercase; opacity: 0.92; }
+    .hook-line { display: block; overflow: hidden; padding: 0 0 6px; }
+    .hook-line span { display: inline-block; font-weight: 900; font-size: 106px; line-height: 0.95; letter-spacing: -0.045em; }
+    #hook-big1 { margin-top: 22px; }
+    .hook-q { color: #FF5CAA; margin-left: 0.18em; }
   </style>
-  <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-layout-allow-overflow="">
+  <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-layout-allow-overflow>
     <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:0.75,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.08,&quot;highlights&quot;:-0.14,&quot;shadows&quot;:0.05,&quot;whites&quot;:0,&quot;blacks&quot;:-0.03,&quot;temperature&quot;:0.02,&quot;tint&quot;:0,&quot;vibrance&quot;:0.06,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0.15,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" id="hook-photo" src="assets/img/file-attente.jpg" alt="La file devant Smash">
-    <div id="hook-lines">
-      <div class="hook-line" id="hook-l1"><span data-var-text="hook1">POURQUOI</span></div>
-      <div class="hook-line" id="hook-l2"><span data-var-text="hook2">TOUT LE MONDE</span></div>
-      <div class="hook-line" id="hook-l3"><span data-var-text="hook3">FAIT LA QUEUE</span></div>
-      <div class="hook-line" id="hook-l4"><span data-var-text="hook4">ICI ?</span></div>
+    <div id="hook-scrim"></div>
+    <div id="hook-text">
+      <div id="hook-small" data-var-text="hookSmall">POURQUOI TOUT LE MONDE</div>
+      <div class="hook-line" id="hook-big1"><span data-var-text="hookBig1">FAIT LA QUEUE</span></div>
+      <div class="hook-line" id="hook-big2"><span>ICI <span class="hook-q">?</span></span></div>
     </div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    // Slow push toward the door and the queue.
     tl.fromTo("#hook-photo", { scale: 1 }, { scale: 1.08, duration: 2.5, ease: "sine.inOut" }, 0);
-    // Every line is on screen at frame 0 (thumbnail); each punches when the voice says it.
-    const hits = [["#hook-l1", 0.1], ["#hook-l2", 0.66], ["#hook-l3", 1.04], ["#hook-l4", 1.56]];
-    hits.forEach(([sel, t]) => {
-      tl.fromTo(sel, { scale: 1 }, { scale: 1.1, duration: 0.07, ease: "power2.out" }, t);
-      tl.to(sel, { scale: 1, duration: 0.2, ease: "back.out(2)" }, t + 0.07);
-    });
+    // The question is fully on screen at frame 0 (it is the thumbnail). One accent: "ICI ?" lands on its word.
+    tl.fromTo("#hook-big2 > span", { scale: 1 }, { scale: 1.08, duration: 0.08, ease: "power2.out" }, 1.56);
+    tl.to("#hook-big2 > span", { scale: 1, duration: 0.3, ease: "power3.out" }, 1.64);
     window.__timelines["hook"] = tl;
   </script>
 </template>
