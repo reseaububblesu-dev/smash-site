@@ -13,33 +13,33 @@
     #lab1 { top: 300px; }
     #lab2 { top: 300px; }
     #lab3 { top: 300px; }
-    .lab-k, .lab-t { display: block; width: fit-content; }
+    .lab-k, .lab-t { display: block; width: fit-content; margin: 0 auto; text-align: center; }
     .lab-k span, .lab-t span {
       display: block; font-family: "Archivo Black", sans-serif;
-      transform: skewX(-8deg); transform-origin: 0 100%;
+      transform: skewX(-8deg); transform-origin: 50% 100%; box-decoration-break: clone; -webkit-box-decoration-break: clone;
     }
     .lab-k span {
       background: #fff; color: #F82D8C; font-size: 60px; line-height: 1.1;
-      padding: 8px 36px 8px 120px;
+      padding: 8px 32px 8px;
     }
-    .lab-t { max-width: 880px; transform-origin: 0% 50%; }
+    .lab-t { max-width: 720px; margin-top: 10px; transform-origin: 50% 50%; }
     .lab-t span {
       background: #F82D8C; color: #fff; font-size: 104px; line-height: 0.98;
-      padding: 8px 40px 18px 120px; letter-spacing: -0.015em;
+      padding: 8px 34px 16px; letter-spacing: -0.015em;
       box-shadow: 0 12px 0 rgba(0,0,0,0.2);
     }
   </style>
   <div id="root" data-composition-id="labels" data-width="1080" data-height="1920" data-layout-allow-overflow>
     <!-- Times are local to this scene, which starts at 2.3 s in the film. -->
-    <div class="lab clip" data-layout-allow-safe-zone id="lab1" data-start="0" data-duration="4.3" data-track-index="1">
+    <div class="lab clip" id="lab1" data-start="0" data-duration="4.3" data-track-index="1">
       <div class="lab-k" id="lab1-k"><span data-var-text="k1">INDICE N°1</span></div>
       <div class="lab-t" id="lab1-t"><span data-var-text="t1">SMASH BURGERS</span></div>
     </div>
-    <div class="lab clip" data-layout-allow-safe-zone id="lab2" data-start="7.4" data-duration="3.0" data-track-index="1">
+    <div class="lab clip" id="lab2" data-start="7.4" data-duration="3.0" data-track-index="1">
       <div class="lab-k" id="lab2-k"><span data-var-text="k2">INDICE N°2</span></div>
       <div class="lab-t" id="lab2-t"><span data-var-text="t2">POULET FRIT</span></div>
     </div>
-    <div class="lab clip" data-layout-allow-safe-zone id="lab3" data-start="10.4" data-duration="2.1" data-track-index="1">
+    <div class="lab clip" id="lab3" data-start="10.4" data-duration="2.1" data-track-index="1">
       <div class="lab-k" id="lab3-k"><span data-var-text="k3">ET POUR FINIR…</span></div>
       <div class="lab-t" id="lab3-t"><span data-var-text="t3">MILKSHAKES</span></div>
     </div>
@@ -53,10 +53,10 @@
       if (i === 0) {
         tl.fromTo(t, { scale: 1.25 }, { scale: 1, duration: 0.27, ease: "back.out(1.6)" }, s);
       } else {
-        tl.fromTo(k, { xPercent: -105 }, { xPercent: 0, duration: 0.27, ease: "power4.out" }, s);
-        tl.fromTo(t, { xPercent: -105, scale: 1.25 }, { xPercent: 0, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, s + 0.07);
+        tl.fromTo(k, { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.22, ease: "power4.out" }, s);
+        tl.fromTo(t, { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "back.out(1.6)" }, s + 0.07);
       }
-      tl.to([t, k], { xPercent: -110, duration: 0.2, ease: "power3.in", stagger: 0.04 }, e - 0.3);
+      tl.to([t, k], { scale: 0.85, opacity: 0, duration: 0.16, ease: "power3.in", stagger: 0.03 }, e - 0.25);
     });
     window.__timelines["labels"] = tl;
   </script>

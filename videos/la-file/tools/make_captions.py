@@ -43,7 +43,7 @@ out = f"""<template>
   <style>
     #root {{ position: absolute; inset: 0; pointer-events: none; }}
     .cg {{
-      position: absolute; left: 120px; width: 660px; top: 1080px; text-align: center;
+      position: absolute; left: 160px; width: 760px; top: 1040px; text-align: center;
       opacity: 0; transform-origin: 50% 50%;
     }}
     .cw {{ padding: 0 6px; border-radius: 4px; background-color: rgba(168,15,87,0); }}

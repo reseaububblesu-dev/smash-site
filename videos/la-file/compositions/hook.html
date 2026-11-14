@@ -14,13 +14,13 @@
     }
     #hook-lines { position: absolute; left: 0; top: 300px; width: 1080px; }
     .hook-line {
-      display: block; width: fit-content; margin-bottom: 14px;
-      transform-origin: 0% 50%;
+      display: block; width: fit-content; margin: 0 auto 14px;
+      transform-origin: 50% 50%;
     }
     .hook-line span {
-      display: block; padding: 6px 36px 10px 120px;
+      display: block; padding: 6px 36px 10px;
       background: #F82D8C; color: #fff;
-      font-family: "Archivo Black", sans-serif; font-size: 76px; line-height: 1.02;
+      font-family: "Archivo Black", sans-serif; font-size: 72px; line-height: 1.02;
       letter-spacing: -0.01em; transform: skewX(-8deg); transform-origin: 0 100%;
       box-shadow: 0 10px 0 rgba(0,0,0,0.18);
     }
@@ -28,7 +28,7 @@
   </style>
   <div id="root" data-composition-id="hook" data-width="1080" data-height="1920" data-layout-allow-overflow>
     <img id="hook-photo" src="assets/img/file-attente.jpg" alt="La file devant Smash" />
-    <div id="hook-lines" data-layout-allow-safe-zone>
+    <div id="hook-lines">
       <div class="hook-line" id="hook-l1"><span data-var-text="hook1">POURQUOI</span></div>
       <div class="hook-line" id="hook-l2"><span data-var-text="hook2">TOUT LE MONDE</span></div>
       <div class="hook-line" id="hook-l3"><span data-var-text="hook3">FAIT LA QUEUE</span></div>

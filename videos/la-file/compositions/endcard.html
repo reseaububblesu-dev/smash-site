@@ -9,16 +9,16 @@
       -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 78%, transparent 100%);
       mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 78%, transparent 100%);
     }
-    #end-burger { position: absolute; left: 330px; top: 250px; width: 700px; height: 596px; }
+    #end-burger { position: absolute; left: 190px; top: 250px; width: 700px; height: 596px; }
     #end-burger img, #end-logo img { width: 100%; height: 100%; display: block; }
-    #end-logo { position: absolute; left: 90px; top: 800px; width: 660px; height: 289px; }
-    #end-cta, #end-addr { position: absolute; left: 0; width: 780px; }
-    #end-cta { top: 1060px; }
-    #end-addr { top: 1196px; left: 132px; width: 640px; }
+    #end-logo { position: absolute; left: 210px; top: 820px; width: 660px; height: 289px; }
+    #end-cta, #end-addr { position: absolute; left: 140px; width: 800px; text-align: center; }
+    #end-cta { top: 1100px; }
+    #end-addr { top: 1192px; }
     #end-cta span, #end-addr span {
       display: inline-block; font-family: "Archivo Black", sans-serif; transform: skewX(-8deg);
     }
-    #end-cta span { display: block; width: fit-content; background: #fff; color: #F82D8C; font-size: 52px; line-height: 1.12; padding: 6px 28px 10px 120px; transform-origin: 0 100%; }
+    #end-cta span { display: block; width: fit-content; background: #fff; color: #F82D8C; font-size: 46px; line-height: 1.12; padding: 8px 30px 12px; margin: 0 auto; transform-origin: 50% 100%; }
     #end-addr span { color: #fff; font-size: 34px; letter-spacing: 0.02em; }
   </style>
   <div id="root" data-composition-id="endcard" data-width="1080" data-height="1920">
@@ -31,7 +31,7 @@
     const tl = gsap.timeline({ paused: true });
     tl.fromTo("#end-burger", { yPercent: -70, scale: 1.2 }, { yPercent: 0, scale: 1, duration: 0.35, ease: "power4.out" }, 0);
     tl.fromTo("#end-logo", { scale: 1.35, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "back.out(1.6)" }, 0.12);
-    tl.fromTo("#end-cta", { xPercent: -105 }, { xPercent: 0, duration: 0.3, ease: "power4.out" }, 0.3);
+    tl.fromTo("#end-cta", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "back.out(1.6)" }, 0.3);
     tl.fromTo("#end-addr", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.75);
     window.__timelines["endcard"] = tl;
   </script>
