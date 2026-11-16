@@ -2,24 +2,29 @@
 Run from the project root: python3 tools/build.py, then re-apply the grade (see README note at the end)."""
 from PIL import Image
 
-# (id, seconds, kind, file, media-start)   kind: img | vid
+# Documentary cut: only clean, well-framed shots. (id, seconds, kind, file, media-start)
 SEQ = [
- ("avant",1.5,"img","avant-facade",0), ("apres",1.5,"img","apres-facade",0),
- ("mur",1.5,"img","mur-abime",0), ("salle",1.0,"img","salle-vide",0), ("nettoyage",2.0,"vid","nettoyage",0.1),
- ("hottesale",1.0,"img","hotte-sale",0), ("moteur",1.0,"img","moteur-gras",0), ("extracteur",1.5,"img","extracteur-neuf",0),
- ("cuisine",1.5,"img","cuisine",0), ("hotte",1.0,"img","hotte",0), ("sauces",1.0,"img","sauces",0), ("courses",1.0,"img","courses",0),
- ("ens1",2.0,"vid","enseigne-porte",0.2), ("echelle",1.5,"img","echelle",0), ("ens2",1.5,"vid","enseigne-posee",0.3),
- ("menu",1.0,"img","menu-imprime",0), ("comptoir1",1.5,"img","comptoir-menu",0), ("stickers",1.0,"vid","stickers",0.2),
- ("mugs",1.0,"img","mugs",0), ("tampon",1.0,"img","tampon",0), ("borne",1.0,"vid","borne",0.3), ("bornes",1.0,"img","bornes",0),
- ("tonneau",1.0,"img","tonneau",0),
- ("entree",2.0,"vid","entree",0.4), ("duo",1.5,"img","duo",0), ("ecran",1.5,"vid","ecran-vitrine",1.2),
- ("nuit",1.5,"img","nuit-file",0), ("story",1.5,"vid","story-file",0.2), ("comptoir2",2.0,"vid","entree-comptoir",0.1),
+ ("avant",1.7,"img","avant-facade",0), ("apres",1.7,"img","apres-facade",0),
+ ("mur",1.3,"img","mur-abime",0), ("salle",1.2,"img","salle-vide",0),
+ ("rouleau",2.0,"vid","peinture-rouleau",0.1), ("plafond",1.6,"vid","peinture-plafond",0.2), ("murpeint",1.8,"vid","peinture-mur",0.2),
+ ("moteur",1.3,"img","moteur-gras",0), ("extracteur",1.3,"img","extracteur-neuf",0), ("cuisine",1.5,"img","cuisine",0), ("sauces",1.3,"img","sauces",0),
+ ("menu",1.3,"img","menu-imprime",0), ("comptoir1",1.6,"img","comptoir-menu",0), ("mugs",1.1,"img","mugs",0),
+ ("tampon",1.1,"img","tampon",0), ("stickers",1.2,"vid","stickers",0.2), ("tonneau",1.3,"img","tonneau",0),
+ ("echelle",1.7,"img","echelle",0),
+ ("duo",1.8,"img","duo",0), ("comptoir2",2.0,"vid","entree-comptoir",0.1), ("story",1.7,"vid","story-file",0.15),
 ]
-# Chapter words: shot id -> text (HTML allowed for a line break)
-CH = {"avant":"AVANT","apres":"APRÈS","mur":"ON REPART<br>DE ZÉRO","hottesale":"LA CUISINE",
-      "extracteur":"TOUT NEUF","ens1":"L'ENSEIGNE","menu":"LES DÉTAILS","entree":"LE JOUR J"}
-LOW = {"avant","apres"}   # words placed low so the shop signs stay visible
-
+# Narration lines: shot id -> (kicker, sentence with <br> for line breaks)
+CH = {
+ "avant":("LES LILAS","Avant,<br>c'était ça"),
+ "apres":("AUJOURD'HUI","Smash<br>by Bubble Sü"),
+ "mur":("LE CHANTIER","On a tout<br>repris à zéro"),
+ "rouleau":("À LA MAIN","Chaque mur,<br>repeint par nous"),
+ "moteur":("LA CUISINE","Remise<br>à neuf"),
+ "menu":("L'IDENTITÉ","Jusqu'au<br>moindre détail"),
+ "echelle":("L'ENSEIGNE","Posée<br>par nos soins"),
+ "duo":("LE JOUR J","Et vous<br>étiez là"),
+}
+LOW = set()
 t=0; html=[]; js=[]; marks=[]
 for i,(sid,d,k,f,ms) in enumerate(SEQ):
     st=round(t,2); t+=d
@@ -41,10 +46,9 @@ for i,(sid,d,k,f,ms) in enumerate(SEQ):
 END=round(t,2); TOTAL=round(END+3.5,2)
 
 words=[]
-for j,(sid,st,txt) in enumerate(marks):
+for j,(sid,st,(kick,txt)) in enumerate(marks):
     nxt = marks[j+1][1] if j+1<len(marks) else END
-    words.append((f"m{j}",sid,st,round(nxt-st if sid in LOW else min(1.5,nxt-st),2),txt))
-
+    words.append((f"m{j}",sid,st,round(min(2.6,nxt-st),2),kick,txt))
 open("index.html","w").write(f'''<!doctype html>
 <html lang="fr">
   <head>
@@ -86,33 +90,14 @@ open("index.html","w").write(f'''<!doctype html>
 </html>
 ''')
 
-low_ids=", ".join(f"#{i}" for i,sid,*_ in words if sid in LOW)
-low_w=", ".join(f"#{i} .mw" for i,sid,*_ in words if sid in LOW)
-wh="\n".join(f'    <div class="mot clip" id="{i}" data-start="{s}" data-duration="{d}" data-track-index="1"><span class="mw" id="{i}-w">{t}<span class="pt">.</span></span></div>' for i,sid,s,d,t in words)
-open("compositions/mots.html","w").write(f'''<template>
-  <style>
-    #root {{ position: absolute; inset: 0; pointer-events: none; }}
-    .mot {{ position: absolute; left: 0; top: 0; width: 1080px; height: 980px; text-align: center;
-      background: linear-gradient(180deg, rgba(0,0,0,0.66) 0%, rgba(0,0,0,0.42) 50%, rgba(0,0,0,0) 100%); }}
-    .mw {{ display: inline-block; margin-top: 380px; max-width: 820px; color: #fff; font-family: "Inter", sans-serif; font-weight: 900;
-      font-size: 112px; line-height: 0.98; letter-spacing: -0.05em; text-shadow: 0 6px 30px rgba(0,0,0,0.35); }}
-    {low_ids} {{ top: 940px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 100%); }}
-    {low_w} {{ font-size: 150px; margin-top: 360px; }}
-    .pt {{ color: #FF5CAA; }}
-  </style>
-  <div id="root" data-composition-id="mots" data-width="1080" data-height="1920" data-layout-allow-overflow>
-{wh}
-  </div>
-  <script>
-    const tl = gsap.timeline({{ paused: true }});
-    // Frame 0 is the thumbnail: "AVANT." is already there.
-    tl.fromTo("#m0-w", {{ scale: 1.06 }}, {{ scale: 1, duration: 0.6, ease: "power3.out" }}, 0);
-    [{", ".join(f'["#{i}-w", {s}]' for i,sid,s,d,t in words[1:])}].forEach(([sel, t]) => {{
-      tl.fromTo(sel, {{ scale: 1.4, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.22, ease: "power4.out" }}, t);
-    }});
-    window.__timelines["mots"] = tl;
-  </script>
-</template>
-''')
+def lines(txt): return "".join(f'<div class="l"><span>{x}</span></div>' for x in txt.split("<br>"))
+wh="\n".join(
+    f'    <div class="mot clip" id="{i}" data-start="{s}" data-duration="{d}" data-track-index="1">\n'
+    f'      <div class="k" id="{i}-k"><i class="bar"></i>{k}</div>\n'
+    f'      <div class="t" id="{i}-t">{lines(t)}</div>\n'
+    f'    </div>' for i,sid,s,d,k,t in words)
+timing=", ".join(f'["{i}", {s}, {round(s+d,2)}]' for i,sid,s,d,k,t in words)
+tpl=open("tools/mots.template.html").read()
+open("compositions/mots.html","w").write(tpl.replace("__WORDS__",wh).replace("__TIMING__",timing).replace("__END__",str(END)))
 print("END", END, "TOTAL", TOTAL)
 # Then: npx hyperframes media-treatment --selector "video, img.clip" --grading '<grade>' --apply
