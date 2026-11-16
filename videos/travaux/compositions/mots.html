@@ -14,15 +14,16 @@
     <div class="mot clip" id="m1" data-start="1.5" data-duration="1.5" data-track-index="1"><span class="mw" id="m1-w">APRÈS<span class="pt">.</span></span></div>
     <div class="mot clip" id="m2" data-start="3.0" data-duration="1.5" data-track-index="1"><span class="mw" id="m2-w">ON REPART<br>DE ZÉRO<span class="pt">.</span></span></div>
     <div class="mot clip" id="m3" data-start="7.5" data-duration="1.5" data-track-index="1"><span class="mw" id="m3-w">LA CUISINE<span class="pt">.</span></span></div>
-    <div class="mot clip" id="m4" data-start="12.0" data-duration="1.5" data-track-index="1"><span class="mw" id="m4-w">L'ENSEIGNE<span class="pt">.</span></span></div>
-    <div class="mot clip" id="m5" data-start="17.0" data-duration="1.5" data-track-index="1"><span class="mw" id="m5-w">LES DÉTAILS<span class="pt">.</span></span></div>
-    <div class="mot clip" id="m6" data-start="25.5" data-duration="1.5" data-track-index="1"><span class="mw" id="m6-w">LE JOUR J<span class="pt">.</span></span></div>
+    <div class="mot clip" id="m4" data-start="9.5" data-duration="1.5" data-track-index="1"><span class="mw" id="m4-w">TOUT NEUF<span class="pt">.</span></span></div>
+    <div class="mot clip" id="m5" data-start="15.5" data-duration="1.5" data-track-index="1"><span class="mw" id="m5-w">L'ENSEIGNE<span class="pt">.</span></span></div>
+    <div class="mot clip" id="m6" data-start="20.5" data-duration="1.5" data-track-index="1"><span class="mw" id="m6-w">LES DÉTAILS<span class="pt">.</span></span></div>
+    <div class="mot clip" id="m7" data-start="29.0" data-duration="1.5" data-track-index="1"><span class="mw" id="m7-w">LE JOUR J<span class="pt">.</span></span></div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
     // Frame 0 is the thumbnail: "AVANT." is already there.
     tl.fromTo("#m0-w", { scale: 1.06 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
-    [["#m1-w", 1.5], ["#m2-w", 3.0], ["#m3-w", 7.5], ["#m4-w", 12.0], ["#m5-w", 17.0], ["#m6-w", 25.5]].forEach(([sel, t]) => {
+    [["#m1-w", 1.5], ["#m2-w", 3.0], ["#m3-w", 7.5], ["#m4-w", 9.5], ["#m5-w", 15.5], ["#m6-w", 20.5], ["#m7-w", 29.0]].forEach(([sel, t]) => {
       tl.fromTo(sel, { scale: 1.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "power4.out" }, t);
     });
     window.__timelines["mots"] = tl;
