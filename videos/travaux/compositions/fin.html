@@ -1,0 +1,34 @@
+<html data-composition-variables='[
+  {"id":"merci","type":"string","label":"Message","default":"Merci d'être venus"},
+  {"id":"rue","type":"string","label":"Adresse","default":"81 avenue Pasteur"},
+  {"id":"ville","type":"string","label":"Ville","default":"LES LILAS"}
+]'>
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; background: #F82D8C; }
+    #fin-logo { position: absolute; left: 225px; top: 560px; width: 630px; height: 276px; }
+    #fin-logo img { width: 100%; height: 100%; display: block; }
+    #fin-rule { position: absolute; left: 508px; top: 880px; width: 64px; height: 6px; background: #fff; transform-origin: 50% 50%; }
+    #fin-merci, #fin-rue, #fin-ville { position: absolute; left: 140px; width: 800px; text-align: center; color: #fff; font-family: "Inter", sans-serif; }
+    #fin-merci { top: 916px; overflow: hidden; padding-bottom: 6px; }
+    #fin-merci span { display: inline-block; font-weight: 900; font-size: 60px; letter-spacing: -0.04em; line-height: 1.05; }
+    #fin-rue { top: 1000px; font-weight: 700; font-size: 34px; letter-spacing: -0.01em; }
+    #fin-ville { top: 1050px; font-weight: 700; font-size: 28px; letter-spacing: 0.34em; }
+  </style>
+  <div id="root" data-composition-id="fin" data-width="1080" data-height="1920">
+    <div id="fin-logo"><img src="assets/img/logo.png" alt="Smash by Bubble Sü" /></div>
+    <div id="fin-rule"></div>
+    <div id="fin-merci"><span data-var-text="merci">Merci d'être venus</span></div>
+    <div id="fin-rue" data-var-text="rue">81 avenue Pasteur</div>
+    <div id="fin-ville" data-var-text="ville">LES LILAS</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#fin-logo", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.45, ease: "power4.out" }, 0.05);
+    tl.fromTo("#fin-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.out" }, 0.35);
+    tl.fromTo("#fin-merci span", { yPercent: 105 }, { yPercent: 0, duration: 0.5, ease: "power4.out" }, 0.45);
+    tl.fromTo(["#fin-rue", "#fin-ville"], { opacity: 0 }, { opacity: 0.95, duration: 0.4, ease: "power2.out", stagger: 0.1 }, 0.8);
+    window.__timelines["fin"] = tl;
+  </script>
+</template>
+</html>
